@@ -1,0 +1,52 @@
+
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css">
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+</head>
+<body>
+{% extends "layout_side_nav.html" %}
+{% block content %}
+<!--<h1 style="color:blue;"> {{title}}</h1>-->
+<!--<font size="6">The Global Terrorism Dataset (GTD) is an open-source database maintained by the National Consortium for the Study of Terrorism and-->
+    <!--Responses to Terrorism (START) at the University of  Maryland. This dataset recorded information on 181,693 terrorist attacks all-->
+    <!--over the world from 1970 to 2017. This is our attempt at understanding the trends in terrorism through data interaction and visualisation. </font>-->
+<div class="container">
+    <div class="row">
+        <!--<div class="col-xs-3">-->
+            <!--<label> Choose the plot type....</label>-->
+            <!--<select class="form-control" id ='first_cat'>-->
+                <!--<option value="Bar">Bar</option>-->
+                <!--<option value="Scatter">Scatter</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <font size="6">Distribution of attack types which were successful</font>
+        <div class="col-md-6">
+            <div class="chart" id="piegraph">
+                <script>
+                    var graphs = {{plot1 | safe}};
+                    Plotly.plot('piegraph',graphs,{});
+                </script>
+            </div>
+        </div>
+        <font size="6">Number of attacks per each year</font>
+        <div class="col-md-6">
+            <div class="chart" id="linegraph">
+                <script>
+                    var graphs = {{plot2 | safe}};
+                    Plotly.plot('linegraph',graphs,{});
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='js/plots.js') }}"></script>-->
+{% endblock %}
+</body>
+</html>
