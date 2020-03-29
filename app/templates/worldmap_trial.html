@@ -35,7 +35,7 @@ var colorScale = d3.scaleThreshold()
 d3.queue()
   .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
   <!--.defer(d3.csv, "https://raw.githubusercontent.com/keya-desai/agency-jekyll-theme/gh-pages/data.csv", function(d) { data.set(d.name, +d.num_attacks); })-->
-  .defer(d3.json, {{data_json}}, function(d) { data.set(d.name, +d.num_attacks); })
+  .defer(d3.csv, "{{url_for('get_csv_data')}}", function(d) { data.set(d.name, +d.num_attacks); })
   .await(ready);
 
 function ready(error, topo) {
