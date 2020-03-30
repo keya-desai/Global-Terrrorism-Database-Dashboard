@@ -35,7 +35,6 @@ def get_csv_data():
 def get_csv_data_slider():
     df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name, iyear as iyear from main group by country_txt, iyear", connection)
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    # print(df.name.unique)
     return df.to_csv(index = False)
 
 @app.route('/index')
