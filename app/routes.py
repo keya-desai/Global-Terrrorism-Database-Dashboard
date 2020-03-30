@@ -22,15 +22,21 @@ def home():
 
 @app.route('/worldmap')
 def worldmap():
-    return render_template('worldmap_trial.html', title = 'World map')
+    return render_template('map_slider.html', title = 'World map')
     # return render_template('worldmap.html', title='World map')
 
 @app.route('/get_csv_data')
 def get_csv_data():
     df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main group by country_txt", connection)
+    # df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main where iyear = '1970' group by country_txt  ", connection)
     return df.to_csv(index = False)
 
-
+@app.route('/get_csv_data_slider')
+def get_csv_data_slider():
+    df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name, iyear as iyear from main group by country_txt, iyear", connection)
+    df.loc[(df.name == 'United States'), 'name'] = 'USA'
+    # print(df.name.unique)
+    return df.to_csv(index = False)
 
 @app.route('/index')
 def index():

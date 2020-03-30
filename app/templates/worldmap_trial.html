@@ -4,14 +4,21 @@
 <!-- Load d3.js -->
 <script src="http://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
 
 <!-- Create an element where the map will take place -->
 <svg id="my_dataviz" width="2000" height="1500"></svg>
+<!--<svg id="my_dataviz" viewBox="0 0 1010 666" >-->
+
+
 {% extends "layout_side_nav.html" %}
 {% block content %}
 
-<script>
+<script >
+
+
 
 // The svg
 var svg = d3.select("svg"),
@@ -23,7 +30,7 @@ var path = d3.geoPath();
 var projection = d3.geoMercator()
   .scale(70)
   .center([0,20])
-  .translate([width / 2, height / 2]);
+  .translate([width / 4, height / 4]);
 
 // Data and color scale
 var data = d3.map();
@@ -44,11 +51,14 @@ function ready(error, topo) {
       .transition()
       .duration(200)
       .style("opacity", .5)
+
     d3.select(this)
       .transition()
       .duration(200)
       .style("opacity", 1)
       .style("stroke", "black")
+
+
   }
 
   let mouseLeave = function(d) {
