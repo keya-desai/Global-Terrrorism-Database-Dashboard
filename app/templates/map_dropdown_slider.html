@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
 
 <!-- Create an element where the map will take place -->
-<svg id="my_dataviz" width="2000" height="500"></svg>
+<!-- <svg id="my_dataviz" width="2000" height="500"></svg> -->
 <!--<svg id="my_dataviz" viewBox="0 0 1010 666" >-->
 
 {% extends "layout_side_nav.html" %}
@@ -32,183 +32,202 @@
 
 <style>
     #sliderContainer {
-    text-align: center;
-    position: relative;
-    top: 50px;
-}
+        text-align: center;
+        position: relative;
+        top: 50px;
+    }
+
+    #chart {
+        position: fixed;
+        left: 100px;
+        /*right: 100px;*/
+        top: 250px;
+        bottom: 0px;
+        
+      }
 </style>
 
+<div id="chart"></div>
+<script>
 
-<script >
+  var chartDiv = document.getElementById("chart");
+  var width = 2000
+  var height = 500
 
 
+  // Map and projection
+  var path = d3.geoPath();
+  var projection = d3.geoMercator()
+                      // .scale(70)
+                      .center([0,20])
+                      .translate([width / 2, height / 2]);
 
-// The svg
-var svg = d3.select("svg"),
-  width = +svg.attr("width"),
-  height = +svg.attr("height");
+  // Data and color scale
+  var data = d3.map();
+  var data_attacks = d3.map();
+  var data_deaths = d3.map();
+  var colorScale = d3.scaleThreshold()
+    <!--.domain([1, 10, 100, 300, 1000, 5000])-->
+    .domain([1, 5, 10, 15, 20, 25, 30])
+    .range(d3.schemeBlues[7]);
 
-// Map and projection
-var path = d3.geoPath();
-var projection = d3.geoMercator()
-  .scale(70)
-  .center([0,20])
-  .translate([width / 2, height / 2]);
+  // Load external data and boot
+  d3.queue()
+    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+    .defer(d3.csv, "{{url_for('get_csv_data_dropdown')}}", function(d) { data_attacks.set([d.name, d.iyear], +d.num_attacks);
+                                                                       data_deaths.set([d.name, d.iyear], +d.num_deaths)})
+    .await(ready);
 
-// Data and color scale
-var data = d3.map();
-var data_attacks = d3.map();
-var data_deaths = d3.map();
-var colorScale = d3.scaleThreshold()
-  <!--.domain([1, 10, 100, 300, 1000, 5000])-->
-  .domain([1, 5, 10, 15, 20, 25, 30])
-  .range(d3.schemeBlues[7]);
-
-// Load external data and boot
-d3.queue()
-  .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-  .defer(d3.csv, "{{url_for('get_csv_data_dropdown')}}", function(d) { data_attacks.set([d.name, d.iyear], +d.num_attacks);
-                                                                     data_deaths.set([d.name, d.iyear], +d.num_deaths)})
-  .await(ready);
-
-tooltip = d3.select("body")
-    .append("div")
-    .style("position", "absolute")
-    .style("z-index", "10")
-    .style("visibility", "hidden")
-    .style("background", "#101820FF ")
-    .style("color", "white")
-    .style("width", "120px")
-    .style("text-align", "center")
-    .style("border-radius", "6px")
-    .style("padding", "5px", "0")
-    .style("font-size", "12px")
-    .text("a simple tooltip");
+  tooltip = d3.select("body")
+              .append("div")
+              .style("position", "absolute")
+              .style("z-index", "10")
+              .style("visibility", "hidden")
+              .style("background", "#101820FF ")
+              .style("color", "white")
+              .style("width", "120px")
+              .style("text-align", "center")
+              .style("border-radius", "6px")
+              .style("padding", "5px", "0")
+              .style("font-size", "12px")
+              .text("a simple tooltip");
 
 
 
-function ready(error, topo) {
+  function ready(error, topo) {
 
-  let mouseOver = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .5)
+    let mouseOver = function(d) {
+            d3.selectAll(".Country")
+              .transition()
+              .duration(200)
+              .style("opacity", .5)
 
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("opacity", 1)
-      .style("stroke", "black")
+            d3.select(this)
+              .transition()
+              .duration(200)
+              .style("opacity", 1)
+              .style("stroke", "black")
 
-    var dropdown = document.getElementById("selectButton").value
+            var dropdown = document.getElementById("selectButton").value
 
-    tooltip.text("Country : " + d.properties.name + "   " + dropdown + " : " + d.total );
-    return tooltip.style("visibility", "visible")
-
-  }
-
-  let mouseLeave = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .8)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("stroke", "transparent")
-
-  <!--//Makes the new div disappear:-->
-          <!--div.transition()-->
-               <!--.duration('50')-->
-               <!--.style("opacity", 0);-->
-
-    tooltip.style("visibility", "hidden")
-
-  }
-
-
-
-  // Draw the map
-  svg.append("g")
-    .selectAll("path")
-    .data(topo.features)
-    .enter()
-    .append("path")
-      // draw each country
-      .attr("d", d3.geoPath()
-        .projection(projection)
-      )
-      // set the color of each country
-      .attr("fill", function (d) {
-        d.total = data_attacks.get([d.properties.name, "1970"]) || 0;
-        return colorScale(d.total);
-      })
-      .style("stroke", "transparent")
-      .attr("class", function(d){ return "Country" } )
-      .style("opacity", .8)
-      .on("mouseover", mouseOver )
-      .on("mouseleave", mouseLeave )
-      .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-
-
-  d3.select("#timeslide").on("input", function() {
-    update(+this.value);
-    });
-
-    // update the fill of each SVG of class "incident" with value
-    function update(value) {
-
-    document.getElementById("range").innerHTML = value;
-
-    var dropdown = document.getElementById("selectButton").value
-            if (dropdown == "num_attacks"){
-                data = data_attacks;
-            } else {
-                data = data_deaths;
-            }
-
-    d3.selectAll(".Country")
-        .transition().duration(250)
-        .attr("fill", function (d) {
-            d.total = data.get([d.properties.name, value]) || 0;
-            return colorScale(d.total);
-      })
-
+            tooltip.text("Country : " + d.properties.name + "   " + dropdown + " : " + d.total );
+      
+      return tooltip.style("visibility", "visible")
     }
 
-    d3.select("#selectButton")
-      .on("input", function() {
-            updateDropDown(this.value);
-         });
+    let mouseLeave = function(d) {
+            d3.selectAll(".Country")
+              .transition()
+              .duration(200)
+              .style("opacity", .8)
+            d3.select(this)
+              .transition()
+              .duration(200)
+              .style("stroke", "transparent")
 
-    function updateDropDown(value) {
+            tooltip.style("visibility", "hidden")
+    }
 
-      document.getElementById("selectButton").value = value;
 
-      if (value == "num_attacks"){
-        data = data_attacks;
-      } else {
-        data = data_deaths;
+
+
+    var svg = d3.select(chartDiv).append("svg");
+
+    // Extract the width and height that was computed by CSS.
+    // var width = chartDiv.clientWidth;
+    // var height = chartDiv.clientHeight;
+
+    // Use the extracted size to set the size of an SVG element.
+    
+
+    
+    svg
+    .attr("width", width)
+    .attr("height", height);
+
+
+    // var svg = d3.select("svg"),
+    // width = +svg.attr("width"),
+    // height = +svg.attr("height");
+
+
+
+
+
+    // Draw the map
+    svg.append("g")
+        .selectAll("path")
+        .data(topo.features)
+        .enter()
+        .append("path")
+        // draw each country
+        .attr("d", d3.geoPath().projection(projection))
+        // set the color of each country
+        .attr("fill", function (d) {
+          d.total = data_attacks.get([d.properties.name, "1970"]) || 0;
+          return colorScale(d.total);
+        })
+        .style("stroke", "transparent")
+        .attr("class", function(d){ return "Country" } )
+        .style("opacity", .8)
+        .on("mouseover", mouseOver )
+        .on("mouseleave", mouseLeave )
+        .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+
+
+    d3.select("#timeslide").on("input", function() {
+      update(+this.value);
+      });
+
+      // update the fill of each SVG of class "incident" with value
+      function update(value) {
+
+              document.getElementById("range").innerHTML = value;
+
+              var dropdown = document.getElementById("selectButton").value
+              if (dropdown == "num_attacks"){
+                  data = data_attacks;
+              } else {
+                  data = data_deaths;
+              }
+              d3.selectAll(".Country")
+                  .transition().duration(250)
+                  .attr("fill", function (d) {
+                      d.total = data.get([d.properties.name, value]) || 0;
+                      return colorScale(d.total);
+                  })
+
       }
 
-      var year = document.getElementById("range").innerHTML
+      d3.select("#selectButton")
+        .on("input", function() {
+              updateDropDown(this.value);
+           });
 
-      d3.selectAll(".Country")
-          .transition().duration(250)
-          .attr("fill", function (d) {
-              d.total = data.get([d.properties.name, year]) || 0;
-              return colorScale(d.total);
-        })
-    }
+      function updateDropDown(value) {
 
-    }
+            document.getElementById("selectButton").value = value;
+
+            if (value == "num_attacks"){
+              data = data_attacks;
+            } else {
+              data = data_deaths;
+            }
+
+            var year = document.getElementById("range").innerHTML
+
+            d3.selectAll(".Country")
+                .transition().duration(250)
+                .attr("fill", function (d) {
+                    d.total = data.get([d.properties.name, year]) || 0;
+                    return colorScale(d.total);
+              })
+      }
+  }
+
+      // redraw();
+      // // Redraw based on the new size whenever the browser window is resized.
+      // window.addEventListener("resize", redraw);
+ 
 </script>
 {% endblock %}
-
-</title>
-</head>
-<body>
-
-</body>
-</html>
