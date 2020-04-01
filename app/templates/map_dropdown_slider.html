@@ -14,21 +14,36 @@
 
 {% extends "layout_side_nav.html" %}
 {% block content %}
-<div id="sliderContainer">
-    <input id="timeslide" type="range" min="1970" max="2017" value="1970" step="1"/><br>
-    <span id="range">1970</span>
+
+<div class = "container-fluid">
+  
+  <div class = "row">
+    <div class = "col">
+        <div id="sliderContainer">
+          <input id="timeslide" type="range" min="1970" max="2017" value="1970" step="1"/><br>
+         <span id="range">1970</span>
+        </div>
+    </div>
+    <div class = "col">
+        <div id = "Button" style="width:200px; text-align: center; position: relative; left: 200px; top: 10px">
+          <select id = "selectButton">
+              <option value="num_attacks">Attacks</option>
+              <option value="num_deaths">Deaths</option>
+          </select>
+      </div>
+    </div>
+    <div class = "col"></div>
+  </div>
+
+
 </div>
+
 
 <!--<select id="selectButton">-->
     <!--<option value="1">Attacks</option>-->
 <!--</select>-->
 
-<div id = "Button" style="width:200px; text-align: center; position: relative; left: 200px; top: 10px">
-        <select id = "selectButton">
-            <option value="num_attacks">Attacks</option>
-            <option value="num_deaths">Deaths</option>
-        </select>
-</div>
+
 
 <style>
     #sliderContainer {

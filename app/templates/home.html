@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
-       <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css">
+       <!-- <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css"> -->
+       <!-- <link rel=stylesheet type="text/css" href="style.css"> -->
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
       <meta charset="utf-8">
-      <title>Home for Simple Flask Website</title>
+      <title>Global Terrorism Analysis</title>
+      <style>
+          .space{
+            min-height: 200px;
+          }
+      </style>
+        }
    </head>
    <body>
 {% extends "layout_side_nav.html" %}
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
 
     <font size="6">The Global Terrorism Dataset (GTD) is an open-source database maintained by the National Consortium for the Study of Terrorism and
-    Responses to Terrorism (START) at the University of  Maryland. This dataset recorded information on 181,693 terrorist attacks all
-    over the world from 1970 to 2017. This is our attempt at understanding the trends in terrorism through data interaction and visualisation. </font>
+    Responses to Terrorism (START) at the University of  Maryland. 
+    <!-- This dataset recorded information on 181,693 terrorist attacks all over the world from 1970 to 2017. -->
+    This is our attempt at understanding the trends in terrorism through data interaction and visualisation. </font></div>
 
+    <div class = "space"></div>
+    <div class="row">
+    <div class = "col-3">
+      <div class="card">
+        <div class="card-body">
+          <h2> Trends in terrorism of 3 decades - from 1970 to 2017 </h2>
+        </div>
+      </div>
+    </div>
+    <div class = "col-1"></div>
+    <div class = "col-3"><h2> Data of ~190K terrorist attacks </h2></div>
+    <div class = "col-1"></div>
+    <div class = "col-3"><h2> Access the data here </h2></div>
 
+    </div>
 </div>
-</div>
-
 {% endblock %}
    </body>
 

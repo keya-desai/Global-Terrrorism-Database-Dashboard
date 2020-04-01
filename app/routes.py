@@ -22,7 +22,7 @@ def home():
 
 @app.route('/worldmap')
 def worldmap():
-    return render_template('map_dropdown_slider.html', title = 'World map')
+    return render_template('map_scatter.html', title = 'World map')
     # return render_template('worldmap.html', title='World map')
 
 @app.route('/get_csv_data')
@@ -41,6 +41,16 @@ def get_csv_data_slider():
 def get_csv_data_dropdown():
     df = pd.read_sql("select sum(case when nkill = '' then 0 else cast(nkill as int)  end) as num_deaths, count(country_txt) as num_attacks, country_txt as name, iyear as iyear  from main group by country_txt, iyear", connection)
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
+    return df.to_csv(index = False)
+
+
+
+
+@app.route('/get_csv_data_scatter')
+def get_csv_data_scatter():
+    df = pd.read_sql("select num_deaths, num_attacks, a.name, a.iyear, longitude as long, latitude as lat from (select sum(case when nkill = '' then 0 else cast(nkill as int)  end) as num_deaths, count(country_txt) as num_attacks, country_txt as name, iyear as iyear from main group by country_txt, iyear) as a join (select longitude, latitude, country_txt as name, iyear as iyear from main) as b on a.name = b.name and a.iyear = b.iyear", connection)
+    df.loc[(df.name == 'United States'), 'name'] = 'USA'
+    print(df)
     return df.to_csv(index = False)
 
 @app.route('/index')
