@@ -6,10 +6,17 @@
        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
       <meta charset="utf-8">
-      <title>Global Terrorism Analysis</title>
+      <title>{{title}}</title>
       <style>
           .space{
             min-height: 200px;
+          }
+          body{
+            background-color: white;
+          }
+
+          h1{
+            text-align: center;
           }
       </style>
         }
@@ -19,7 +26,8 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="row">
+    <h1> Global Terrorism Analysis </h1>
+    <div class="row" style="width: 70%; text-align: center; margin-left: 200px; margin-top: 50px">
 
     <font size="6">The Global Terrorism Dataset (GTD) is an open-source database maintained by the National Consortium for the Study of Terrorism and
     Responses to Terrorism (START) at the University of  Maryland. 
@@ -28,17 +36,44 @@
 
     <div class = "space"></div>
     <div class="row">
-    <div class = "col-3">
-      <div class="card">
-        <div class="card-body">
-          <h2> Trends in terrorism of 3 decades - from 1970 to 2017 </h2>
-        </div>
-      </div>
+    <div class = "col-6" style="margin-left: 300px">
+              <!-- <div class="card">
+                <div class="card-body">
+                  <h2> Trends in terrorism of 3 decades - from 1970 to 2017 </h2>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="card" style="width: 18rem; height: 10rem">
+              <!-- <img src="https://lh3.googleusercontent.com/proxy/jDhOTjnL-LEGQNkpl_N6QJAdpkTO6Y6yg2gNDT3Zg9rEogZizJlfXbkRlkoNpTAytGhbnqEiPb5pzHBBJ4cjG0Vb" class="card-img-top" alt="..." style="width : 80%; height: 80%; text-align: center"> -->
+                  <div class="card-body">
+                    <!-- <h5 class="card-title">Card title</h5> -->
+                    <p class="card-text" style="font-size: 24px">Trends in terrorism from 1970 to 2017</p>
+                    <a href="{{ url_for('worldmap') }}" class="btn btn-primary"> Go to Dashboard</a>
+                  </div>
+            </div>
     </div>
-    <div class = "col-1"></div>
-    <div class = "col-3"><h2> Data of ~190K terrorist attacks </h2></div>
-    <div class = "col-1"></div>
-    <div class = "col-3"><h2> Access the data here </h2></div>
+    <!-- <div class = "col-1"></div> -->
+    <!-- <div class = "col-4">
+            <div class="card" style="width: 18rem; background-color: #ff8080; color: white">
+                  <div class="card-body">
+                    <p class="card-text" style="font-size: 24px">Data of ~190K terrorist attacks</p>
+                  </div>
+            </div>
+
+    </div> -->
+    <!-- <div class = "col-1"></div> -->
+    <div class = "col" style="margin-left: -100px">
+      <div class="card" style="width: 18rem; height: 10rem;">
+              <!-- <img src="..." class="card-img-top" alt="..."> -->
+                  <div class="card-body">
+                    <!-- <h5 class="card-title">Card title</h5> -->
+                    <p class="card-text" style="font-size: 24px">Access the GTD</p>
+                    <a href="https://start.umd.edu/gtd/" class="btn btn-primary" style="align-self: center">Go to GTD</a>
+                  </div>
+            </div>
+
+    </div>
 
     </div>
 </div>

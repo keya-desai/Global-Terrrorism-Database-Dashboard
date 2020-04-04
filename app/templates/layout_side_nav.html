@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>CSS Template</title>
+<title>GTD</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -47,7 +47,7 @@ body {
 .content {
   margin-left: 200px;
   padding-left: 20px;
-  /*background-color: lightgrey;*/
+  /*background-color: cyan;*/
   /*height: 100%;*/
 
   display:block;
@@ -63,9 +63,9 @@ body {
 <div class="sidenav">
     <h1 style="color:white;"> {{title}}</h1>
   <a href="{{ url_for('home') }}">Home</a>
-    <a href = "{{ url_for('worldmap') }}" >Global Trends</a>
+  <a href = "{{ url_for('worldmap') }}" >Global Trends</a>
   <a href="{{ url_for('index') }}">Analysis</a>
-    <a>User Query</a>
+    <!-- <a>User Query</a> -->
 
 </div>
 <div class = "content">

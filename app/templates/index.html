@@ -1,52 +1,280 @@
-
-
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css">
+    <!-- <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css"> -->
     <meta charset="UTF-8">
     <title>{{title}}</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ -->
+    <link rel="stylesheet" href="https://codepen.io/chriddyp/pen/bWLwgP.css">
 </head>
 <body>
 {% extends "layout_side_nav.html" %}
 {% block content %}
-<!--<h1 style="color:blue;"> {{title}}</h1>-->
-<!--<font size="6">The Global Terrorism Dataset (GTD) is an open-source database maintained by the National Consortium for the Study of Terrorism and-->
-    <!--Responses to Terrorism (START) at the University of  Maryland. This dataset recorded information on 181,693 terrorist attacks all-->
-    <!--over the world from 1970 to 2017. This is our attempt at understanding the trends in terrorism through data interaction and visualisation. </font>-->
+
+
 <div class="container">
-    <div class="row">
-        <!--<div class="col-xs-3">-->
-            <!--<label> Choose the plot type....</label>-->
-            <!--<select class="form-control" id ='first_cat'>-->
-                <!--<option value="Bar">Bar</option>-->
-                <!--<option value="Scatter">Scatter</option>-->
-            <!--</select>-->
-        <!--</div>-->
-        <font size="6">Distribution of attack types which were successful</font>
-        <div class="col-md-6">
-            <div class="chart" id="piegraph">
+    <div class = "row">
+        <font size="6">Distribution of Attack Types</font>
+        <div class="col">
+            <div class="chart" id="pie1" style="width: 100%">
                 <script>
                     var graphs = {{plot1 | safe}};
-                    Plotly.plot('piegraph',graphs,{});
+                    Plotly.plot('pie1',graphs,{});
                 </script>
             </div>
         </div>
-        <font size="6">Number of attacks per each year</font>
-        <div class="col-md-6">
-            <div class="chart" id="linegraph">
+
+
+        <font size="6">Distribution of Target Types</font>
+        <div class="row-md-4">
+            <div class="chart" id="pie2" style="width: 100%">
                 <script>
+                    var layout = {
+                      Text:'Target Type'
+                    };
+
                     var graphs = {{plot2 | safe}};
-                    Plotly.plot('linegraph',graphs,{});
+                    Plotly.newPlot('pie2', graphs, layout);
                 </script>
             </div>
         </div>
     </div>
 </div>
-<!--<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>-->
-<!--<script src="{{ url_for('static', filename='js/plots.js') }}"></script>-->
+
+
+<div class="container">
+    <div class = "row">
+        
+        <font size="6">Distribution of Weapon Types</font>
+        <div class="col">
+            <div class="chart" id="pie3" style="width: 100%; height: 100%">
+                <script>
+                    var graphs = {{plot3 | safe}};
+                    var temp = graphs;
+                    Plotly.plot('pie3',graphs,{});
+                </script>
+            </div>
+        </div>
+
+        <font size="6" style="content: blue">Region Wise Analysis</font>
+        <div class = "col">
+            <div class="chart" id="multiline">
+                    <script>
+                        var layout = {
+                          title : 'Number of Attacks (1970 - 2017)',
+                          // xaxis_title :'Year',
+                          xaxis : {     title: 'Year',
+                                        rangeslider : {thickness : 0.15},
+                                        showline : true,
+                                        range : [1970,2017]},
+                            // yaxis_title : 'Number of Terrorist Attacks per Year',
+                        yaxis : { title:'Number of Terrorist Attacks per Year',                        showline : true}
+                        
+                        };
+
+                        var graphs = {{region_line | safe}};
+                        Plotly.newPlot('multiline', graphs, layout);
+                    </script>
+            </div>
+        </div>
+  
+    </div>
+
+</div>
+
+
+<div class="container">
+    <div class = "row">
+        <!-- <font size="6">Distribution of Target type</font> -->
+
+                <div class="col">
+                 <div class="chart" id="scatter1" style="height: 500px; width: 100%; height: 100%">
+                        <script>
+                            var layout = {
+                                title : 'Terrorist Attacks in North America (1970-2017)',
+                                showlegend : true,
+                                legend : {
+                                    x : 0.5, y : 0.5
+                                },
+                        geo : { scope : "north america",
+                                showland : true,
+                                landcolor : 'rgb(255, 228, 196)',
+                                showlakes : true,
+                                lakecolor : 'rgb(240, 255, 255)'
+                        }
+                            }
+                            var graphs = {{plot5 | safe}};
+
+                            Plotly.plot('scatter1',graphs,layout);
+                        </script>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="chart" id="line1" style="width: 100%; height: 100%">
+                        <script>
+                            var graphs = {{reg_target | safe}};
+                            var layout = {
+                                title : 'Target Type Distribution in North America (1970-2017)',
+                                annotations : graphs.annot,
+                                xaxis : {
+                                    title : 'Wounds',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                        },
+                                yaxis : {
+                                    title : 'Kills',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                }
+                            }
+                            
+                            Plotly.newPlot('line1', graphs.data, layout);
+                        </script>
+                    </div>
+                </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class = "row">
+        <!-- <font size="6">Distribution of Weapon type</font> -->
+                <div class="col">
+                    <div class="chart" id="line2" style="width: 100%; height: 100%">
+                        <script>
+                            var graphs = {{reg_attack | safe}};
+                            var layout = {
+                                title : 'Attack Type Distribution in North America (1970-2017)',
+                                annotations : graphs.annot,
+                                xaxis : {
+                                    title : 'Wounds',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                        },
+                                yaxis : {
+                                    title : 'Kills',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                }
+                            }
+                            
+                            Plotly.newPlot('line2', graphs.data, layout);
+                        </script>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="chart" id="line3" style="width: 100%">
+                        <script>
+                            var graphs = {{reg_weapon| safe}};
+                            var layout = {
+                                title : 'Weapon Type Distribution in North America (1970-2017)',
+                                annotations : graphs.annot,
+                                xaxis : {
+                                    title : 'Wounds',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                        },
+                                yaxis : {
+                                    title : 'Kills',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                }
+                            }
+                            
+                            Plotly.newPlot('line3', graphs.data, layout);
+                        </script>
+                    </div>
+                </div>
+    </div>
+</div>
+
+
+
+
+<!-- <div class="container">
+    <div class="col">
+        <font size="6">Distribution of Attack Types</font>
+        <div class="row-md-4">
+            <div class="chart" id="pie1">
+                <script>
+                    var graphs = {{plot1 | safe}};
+                    Plotly.plot('pie1',graphs,{});
+                </script>
+            </div>
+        </div>
+        <font size="6">Distribution of Target Types</font>
+        <div class="row-md-4">
+            <div class="chart" id="pie2">
+                <script>
+                    var layout = {
+                      Text:'Target Type'
+                    };
+
+                    var graphs = {{plot2 | safe}};
+                    Plotly.newPlot('pie2', graphs, layout);
+                </script>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <font size="6">Distribution of weapon type </font>
+        <div class="row-md-4">
+            <div class="chart" id="pie3">
+                <script>
+                    var graphs = {{plot3 | safe}};
+                    Plotly.plot('pie3',graphs,{});
+                </script>
+            </div>
+        </div>
+
+    <h2>Region wise Analysis</h2>
+    <h4>Select a region: North America</h3>
+    <div class="col">
+        <font size="6">Scatter plot</font>
+        <div class="row-md-4">
+            <div class="chart" id="scatter1">
+                <script>
+                    var layout = {
+                        title : 'Terrorist Attacks in North America (1970-2017)',
+                        showlegend : true,
+                        legend : {
+                            x : 0.5, y : 0.5
+                        },
+                geo : { scope : "north america",
+                        showland : true,
+                        landcolor : 'rgb(255, 228, 196)',
+                        showlakes : true,
+                        lakecolor : 'rgb(240, 255, 255)'
+                }
+                    }
+                    var graphs = {{plot5 | safe}};
+                    Plotly.plot('scatter1',graphs,layout);
+                </script>
+            </div>
+        </div>
+
+
+
+</div> -->
+
 {% endblock %}
 </body>
 </html>
