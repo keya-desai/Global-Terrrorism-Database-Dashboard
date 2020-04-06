@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title></title>
-</head>
-<body>
+	{% block head %}
+	<title>{% block title %}{% endblock %}Dashboard</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+	<!-- d3.js -->	
+	<script src="http://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
+	<style>
+	/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+	.row.content {height: 100%}
+
+	/* Set gray background color and 100% height */
+	.sidenav {
+	  background-color: #f1f1f1;
+	  height: 100%;
+	}
+
+	.container-fluid{
+		height: 100%;
+	}
+
+	html, body {
+		    height: 100%;
+		}
+	.circle:hover{
+	  stroke: black;
+	  stroke-width: 4px;
+	}
+
+/*	.subunit.CHN { fill: #fb8072; }
+	.subunit.TWN { fill: #8dd3c7; }
+	.subunit.HKG { fill: #045a8d; }
+	.subunit.JPN { fill: #b3de69; }
+	.subunit.KOR { fill: #bc80bd; }
+	.subunit.IND { fill: #fdb462; }
+	.subunit.BTN { fill: #ffffb3; }
+	.subunit.NPL { fill: #80b1d3; }
+	.subunit.BGD { fill: #d9d9d9; }
+	.subunit.MMR { fill: #ccebc5; }
+	.subunit.THA { fill: #7489cf; }
+	.subunit.KHM { fill: #bebada; }
+	.subunit.VNM { fill: #df65b0; }
+	.subunit.LAO { fill: #fccde5; }
+	.subunit.PRK { fill: #989898; }*/
+	.country {
+          fill : hsla(0, 0%, 50%, 0.4);
+          stroke:white;
+          stroke-width: 1.5px;
+          cursor: pointer;
+        }
+        .country:hover {
+          fill : hsla(0, 0%, 50%, .6);
+        }
+        .country.active {
+          fill: hsl(0, 100%, 75%);
+        }
+        .country.active:hover {
+          fill: hsl(0, 100%, 75%);
+        }
+        .label {
+          font-size: .8rem;
+          text-anchor: middle;
+          fill: hsl(0, 0%, 20%);
+          /* don't allow labels to interfere with country clicks and hovers */
+          pointer-events: none;
+        }
+        /* responsive set up */
+        .svg-container {
+          display:inline-block;
+          position:relative;
+          width:100%;
+          padding-bottom:52%;
+          vertical-align:middle;
+          overflow: hidden;
+        }
+        .svg {
+          display:inline-block;
+          position:absolute;
+          top:0;
+          left: 0;
+         }
+
+        
+
+	</style>
+	{% endblock %}
+	</head>
+
+<body>
+		{% block content %}
+	  	{% endblock %}
 </body>
 </html>

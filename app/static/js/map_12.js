@@ -11,56 +11,38 @@
 
 
 
-      console.log("here")
+      // console.log("here")
       var chartDiv = document.getElementById("chart");
-      var width = 200
-      var height = 1500
+      // console.log(chartDiv.style.width)
+      // console.log(chartDiv.style.height)
+      // var height = document.getElementById('chart').clientHeight
+      // var width = document.getElementById('chart').clientWidth 
+      // var width = 600;
+      // var height = 500;
+
+      const svg = d3.select('svg')
+      const params = svg.attr('viewBox').split(' ').map((n) => parseInt(n, 10))
+      const width = params[2]
+      const height = params[3]
+      const mapContainer = svg.append('g')
 
 
       // Map and projection
-      var path = d3.geoPath();
-      var projection = d3.geoMercator()
-                          .scale(70)
-                          .center([0,20])
-                          .translate([width / 4, height / 4]);
+
+                          // .scale(100)
+                          // .center([0,0])
+                          // .translate([width / 2, height / 2]);
 
       // Data and color scale
       var data = d3.map();
       var data_attacks = d3.map();
       var data_deaths = d3.map();
       var colorScale = d3.scaleThreshold()
-        <!--.domain([1, 10, 100, 300, 1000, 5000])-->
         .domain([1, 5, 10, 15, 20, 25, 30])
         .range(d3.schemeBlues[7]);
 
-      // var markers = {};
-      // var markers = d3.map();
-      // markers = d3.map();
-      markers = []
-      // const url = 'http://localhost:5000/get_csv_data_dropdown'
-      // fetch(url)
-      //   .then(data_csv => {
-      //     console.log(data_csv)
-      //   })  
 
-      // fetch(url)
-      //   .then(function(response) {
-      //     return response.text;
-      //   })
-      //   .then(function(resText) {
-      //     console.log(resText);
-      //   });
-
-      // // fetch(url)
-      // .then(function(response) {
-      //   return response.ok ? response.text() : Promise.reject(response.status);
-      // }).then(function(text) {
-      //   return d3.csvParse(text);
-      // });
-        // .then(json => {
-        //     console.log(json);
-        //     document.getElementById("demo").innerHTML = JSON.stringify(json)
-        // })
+      // markers = []
 
       // Load external data and boot
       d3.queue()
@@ -80,6 +62,8 @@
         //  })
         .await(ready);
 
+
+     
       // A simple promise that resolves after a given time
 
       tooltip = d3.select("body")
@@ -132,31 +116,12 @@
                 tooltip.style("visibility", "hidden")
         }
 
-
-
-
-        var svg = d3.select(chartDiv).append("svg");
-
-        // Extract the width and height that was computed by CSS.
-        // var width = chartDiv.clientWidth;
-        // var height = chartDiv.clientHeight;
-
-        // Use the extracted size to set the size of an SVG element.
-        
-        // svg.attr("viewBox", "0 0 500 500")
-
-          
-        svg
-        .attr("width", width)
-        .attr("height", height);
-
-
-        // var svg = d3.select("svg"),
-        // width = +svg.attr("width"),
-        // height = +svg.attr("height");
-
-
-
+         var path = d3.geoPath();
+         var projection = d3.geoMercator()
+                            .scale(100)
+                            .center([0,0])
+                            .translate([width / 2, height / 2]);
+                         // .fitSize([width, height], data_attacks);
 
 
         // Draw the map

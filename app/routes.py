@@ -15,10 +15,41 @@ def home():
     return render_template('home.html', title = 'Global Terrorism Analysis')
 
 
+
 @app.route('/worldmap')
 def worldmap():
-    return render_template('globaltrends.html', title = 'Global Terrorism Analysis')
+    return render_template('global.html')
     # return render_template('worldmap.html', title='World map')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+
+@app.route('/region')
+def region():
+
+    plots = plotsAnalysis.Plots()
+    # line = create_plot_attack_per_year(connection)
+    attack_pie = plots.create_attack_pie()
+    target_pie = plots.create_target_pie()
+    weapon_pie = plots.create_weapon_pie()
+    region_line = plots.attack_per_region()
+    reg_map = plots.region_map()
+    reg_target = plots.region_target()
+    reg_weapon = plots.region_weapon()
+    reg_attack = plots.region_attack()
+
+    return render_template('region.html', title='Global Terrorism Analysis', plot1 = attack_pie, plot2 = target_pie, plot3 = weapon_pie, region_line = region_line, plot5 = reg_map, reg_target = reg_target, reg_weapon = reg_weapon, reg_attack = reg_attack)
+
+
+@app.route('/country')
+def country():
+    return render_template('country.html')
+
+
+
+
 
 @app.route('/get_csv_data')
 def get_csv_data():
@@ -64,27 +95,16 @@ def cal_date(row):
 
 @app.route('/get_csv_data_scatter')
 def get_csv_data_scatter():
-    df = pd.read_sql("select longitude as long, latitude as lat, iyear as iyear from main", connection)
+    asia_country_list = ["India", "Afghanistan", "Nepal", "China", "North Korea"]
+    df = pd.read_sql("select longitude as long, latitude as lat, iyear as iyear, \
+                        (case when nkill = '' then 0 else cast(nkill as int)  end) as kills, country_txt from main\
+                        where region_txt = 'South Asia'", connection)
     # df.loc[(df.name == 'United States'), 'name'] = 'USA'
     # print(df)
     return df.to_csv(index = False)
     
 
-@app.route('/index')
-def index():
 
-    plots = plotsAnalysis.Plots()
-    # line = create_plot_attack_per_year(connection)
-    attack_pie = plots.create_attack_pie()
-    target_pie = plots.create_target_pie()
-    weapon_pie = plots.create_weapon_pie()
-    region_line = plots.attack_per_region()
-    reg_map = plots.region_map()
-    reg_target = plots.region_target()
-    reg_weapon = plots.region_weapon()
-    reg_attack = plots.region_attack()
-
-    return render_template('index.html', title='Global Terrorism Analysis', plot1 = attack_pie, plot2 = target_pie, plot3 = weapon_pie, region_line = region_line, plot5 = reg_map, reg_target = reg_target, reg_weapon = reg_weapon, reg_attack = reg_attack)
 
 
 
