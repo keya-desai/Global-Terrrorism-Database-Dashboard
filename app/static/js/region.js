@@ -98,8 +98,8 @@ function addBubbles(mapContainer, projection){
     console.log(markers)
 
     var size = d3.scaleLinear()
-      .domain([1, 50])  // What's in the data
-      .range([ 1, 25])  // Size in pixel
+      .domain([0, 50])  // What's in the data
+      .range([ 2, 25])  // Size in pixel
 
 
     var Tooltip = d3.selectAll("body")
@@ -116,16 +116,16 @@ function addBubbles(mapContainer, projection){
       var top = offsets.top;
       var left = offsets.left;
       Tooltip
-        .html("Year: " + d.year +  "<br>" + "country: " + d.country + "<br>" +"state: " + d.state + "<br>" + "city: " + d.city 
-              + "<br>" + "location: " + d.location + "<br>" + "long: " + d.long + "<br>" + "lat: " + d.lat 
-              + "<br>" + "killed: " + d.size 
-              + "<br>" +"wounds: " + d.wounds 
+        .html("Year: " + d.year +  "<br>" + "Country: " + d.country + "<br>" +"State: " + d.state + "<br>" + "City: " + d.city 
+              + "<br>" + "Location: " + d.location + "<br>" + "long: " + d.long + "<br>" + "lat: " + d.lat 
+              + "<br>" + "Killed: " + d.size 
+              + "<br>" +"Wounded: " + d.wounds 
               + "<br>" +"Attack type: " + d.attack
               + "<br>" +"Target type: " + d.target
               + "<br>" +"Weapon: " + d.weapon
               + "<br>" +"Gang name: " + d.gname
-              + "<br>" + "summary: " + d.summary 
-              + "<br>" + "motive: " + d.motive)
+              + "<br>" + "Summary: " + d.summary 
+              + "<br>" + "Motive: " + d.motive)
         .style("left", (left + 10) + "px")
         .style("top", (top + 70) + "px");
         // .style("left", (d3.mouse(this)[0]-20) + "px")
