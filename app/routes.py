@@ -149,39 +149,52 @@ def get_csv_data_scatter(year):
 
     return df.to_csv(index = False)
 
-    # df_2 = pd.read_sql("select count(country_txt) as num_attacks, country_txt, region_txt, iyear from main where success = '1' group by country_txt,region_txt, iyear", connection)
-    # # df_2 = gt_data.groupby(['region_txt','country_txt','iyear'],as_index=False).agg({"success": "sum"})
-    # # df_2.head()
-
-
-    # region_list = df_2['region_txt'].unique()
-    # # print(region_list)
-
-    # data = {}
-    # for region in region_list:
-    #   region = str(region)
-    #   r_df = df_2[(df_2['region_txt'] == region)]
-    #   c_list = r_df['country_txt'].unique()
-    #   reg_list = []
-    #   for c in c_list:
-    #     c = str(c)
-    #     temp_list = []
-    #     temp_list.append(c)
-    #     c_df = r_df[(r_df['country_txt'] == c)]
-    #     for y in range(1970,2018):
-    #       y = str(y)
-    #       y_df = c_df[(c_df['iyear'] == y)]
-    #       if not y_df.empty:
-    #         temp_list.append(int(y_df['num_attacks']))
-    #       else:
-    #         temp_list.append(int(0))
-    #     reg_list.append(temp_list)
-    #   data[region] = reg_list
-    # print(data)
 
     
+@app.route('/get_csv_data_terrorist/')
+def get_csv_data_terrorist():
 
 
+    df = pd.read_sql("select count(eventid) as num_attacks, gname, iyear\
+                    from main\
+                    where country_txt = 'United States' and success = '1'\
+                    group by  gname, iyear;", connection)
+    # df_3 = gt_data[(gt_data['country_txt'] == "United States")]
+    # gname_df = df_3.groupby(['iyear','gname'],as_index=False).agg({"success": "sum"})
+
+
+
+    gname_list = df['gname'].unique()
+
+    data = []
+    for name in gname_list:
+      n_df = df[df['gname'] == name]
+      for y in range(1970,2018):
+        y = str(y)
+        y_df = n_df[n_df['iyear'] == y]
+        val = 0
+        if not y_df.empty:
+          val = int(y_df['num_attacks'])
+        temp_dict = {"gname":name,"year":y,"attacks":val}
+        data.append(temp_dict)
+    # print(data)
+
+    # return data.to_csv(index = False)
+
+@app.route('/get_csv_data_lineplot/<country>')
+def get_csv_data_lineplot(country):
+
+    df = pd.read_sql("select iyear , country_txt,\
+                        count(eventid) as attacks,\
+                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills,\
+                        sum(case when nwound = '' then 0 when nwound = '8.5' then 8 else cast(nwound as int)  end) as wounds \
+                        from main\
+                        where country_txt = '" + country +"' \
+                        group by iyear, country_txt\
+                        order by iyear ", connection)
+    print(country)
+
+    return df.to_csv(index = False)
 
 
 

@@ -43,6 +43,16 @@
 
 
         <div class="col-sm-10" >
+
+          <!-- country dropdown -->
+          <div class = "row">
+              <div class = "well">
+                <div id = "button">
+                    <select id = "countryButton">
+                    </select>
+                </div>
+              </div>
+          </div>
          
              <!-- country stacked bar -->
           <div class = "row">
@@ -53,12 +63,26 @@
                   <script src="https://www.amcharts.com/lib/4/core.js"></script>
                   <script src="https://www.amcharts.com/lib/4/charts.js"></script>
                   <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script src="https://d3js.org/d3.v3.js"></script>
                   <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
                 </div>
 
               </div>
             </div>
           </div>
+
+          <!-- heatmap -->
+           <!-- <div class = "row">
+              <div class = "well">
+
+                    <script type="text/javascript">
+                      d3.csv('get_csv_data_terrorist', function(error, data){
+                        if(error) {console.error(error)}
+                      })
+                    </script>
+
+              </div>
+          </div> -->
 
       </div>
   
