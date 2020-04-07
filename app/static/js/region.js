@@ -43,6 +43,18 @@ function createMap(svg, data) {
   .append('text')
   .attr('class', 'label')
   .text((d)=> d.properties.admin)
+
+  // zoom and pan
+  d3.behavior.zoom()
+    .on("zoom",function() {
+        g.attr("transform","translate("+ 
+            d3.event.translate.join(",")+")scale("+d3.event.scale+")");
+        g.selectAll("path")  
+            .attr("d", path.projection(projection)); 
+      });
+
+  // svg.call(zoom)
+
   // .attr('transform', (d)=> {
   //   const centroid = path.centroid(d)
   //   return `translate(${centroid[0]}, ${centroid[1]})`
@@ -79,30 +91,36 @@ function addBubbles(mapContainer, projection){
     console.log(markers)
 
     var size = d3.scaleLinear()
-      .domain([1,100])  // What's in the data
-      .range([ 1, 4])  // Size in pixel
+      .domain([1,200])  // What's in the data
+      .range([ 1, 3])  // Size in pixel
 
-    var Tooltip = d3.selectAll("#chart")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 1)
-      .style("background-color", "white")
-      .style("border", "solid")
-      .style("border-width", "2px")
-      .style("border-radius", "5px")
-      .style("padding", "5px")
+
+    var Tooltip = d3.selectAll("body")
+                    .append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 1);
+                  
 
     var mouseover = function(d) {
-      Tooltip.style("opacity", 1)
+      Tooltip.style("opacity", 1);
     }
     var mousemove = function(d) {
+      var offsets = document.getElementById('textbox').getBoundingClientRect();
+      var top = offsets.top;
+      var left = offsets.left;
+      console.log(top)
+      console.log(left)
       Tooltip
-        .html(d.kills + "<br>" + "long: " + d.long + "<br>" + "lat: " + d.lat)
-        .style("left", (d3.mouse(this)[0]+10) + "px")
-        .style("top", (d3.mouse(this)[1]) + "px")
+        .html("long: " + d.long + "<br>" + "lat: " + d.lat + "<br>" + "killed: " + d.size )
+        .style("left", (left + 5) + "px")
+        .style("top", (top + 5) + "px");
+        // .style("left", (d3.mouse(this)[0]-20) + "px")
+        // .style("top", (d3.mouse(this)[1] -20) + "px")
+      console.log("In mousemove");
+      
     }
     var mouseleave = function(d) {
-      Tooltip.style("opacity", 0)
+      Tooltip.style("opacity", 0);
     }
 
     mapContainer
@@ -110,18 +128,16 @@ function addBubbles(mapContainer, projection){
         .data(markers)
         .enter()
         .append("circle")
-        // .attr("class" , function(d){ return d.group })
         .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
         .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
         .attr("r", function(d){ return size(d.size) })
-        // .style("fill", function(d){ return color })
         .style("fill", "69b3a2")
         .attr("stroke", "#69b3a2")
         .attr("stroke-width", 3)
         .attr("fill-opacity", .4)
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
+        .on("mouseleave", mouseleave);
       
   });
 

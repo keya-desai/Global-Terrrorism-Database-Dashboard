@@ -76,14 +76,52 @@ def get_csv_data_dropdown():
 
 
 
-@app.route('/get_csv_bar_race')
-def get_csv_bar_race():
-    df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name, iyear as iyear, imonth as imonth  from main where success = '1'group by country_txt, iyear, imonth", connection)
-    df['date'] = df.apply(lambda row: cal_date(row), axis=1)
-    # df = df.groupby(['name','date'],as_index=False).agg({"success": "sum"})
-    df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    print(df)
-    return df.to_csv(index = False)
+# @app.route('/get_csv_bar_race')
+# def get_csv_bar_race():
+#     df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name, iyear as iyear, imonth as imonth  from main where success = '1'group by country_txt, iyear, imonth", connection)
+#     df['date'] = df.apply(lambda row: cal_date(row), axis=1)
+#     # df = df.groupby(['name','date'],as_index=False).agg({"success": "sum"})
+#     df.loc[(df.name == 'United States'), 'name'] = 'USA'
+#     print(df)
+#     return df.to_csv(index = False)
+
+
+@app.route('/get_json_bar_race')
+def get_json_bar_race():
+    df = pd.read_sql("select count(country_txt) as num_attacks, country_txt, iyear as iyear  from main where success = '1' group by country_txt, iyear", connection)
+    
+    # print(df[(df['iyear'] == "2017")])
+    # print(df[(df['iyear'] == "2017") & (df['country_txt'] == country)])
+
+    data = {}
+    country_list = df['country_txt'].unique()
+    
+    for year in range(1970,2018):
+      temp = []
+      year = str(year)
+      temp_df = df[(df['iyear'] == year)]
+      # print(temp_df)
+
+      for country in country_list:
+        temp_dict = {}
+        temp_dict["country"] = str(country)
+        # temp_df = df[(df['iyear'] == year) & (df['country_txt'] == country)]
+        # temp_df.head()
+        temp_country_df = temp_df[(temp_df['country_txt'] == country)]
+        # print(temp_country_df)
+        if not temp_country_df.empty:
+          # print(temp_df['success'])
+          temp_dict["value"] = int(temp_country_df['num_attacks'])
+        else:
+          temp_dict["value"] = 0
+        temp.append(temp_dict)
+      data[year] = temp
+
+    # print("In json bar race routes.py")
+    # print(data["1970"])
+    print(data)
+    return data
+
 
 def cal_date(row):
   month = str(row['imonth'])
@@ -95,12 +133,18 @@ def cal_date(row):
 
 @app.route('/get_csv_data_scatter')
 def get_csv_data_scatter():
-    asia_country_list = ["India", "Afghanistan", "Nepal", "China", "North Korea"]
-    df = pd.read_sql("select longitude as long, latitude as lat, iyear as iyear, \
-                        (case when nkill = '' then 0 else cast(nkill as int)  end) as kills, country_txt from main\
-                        where region_txt = 'South Asia'", connection)
-    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    # print(df)
+    # asia_country_list = ["India", "Afghanistan", "Nepal", "China", "North Korea"]
+    # df = pd.read_sql("select longitude as long, latitude as lat, \
+    #     sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills from main \
+    #     where region_txt = 'South Asia' \
+    #     group by longitude, latitude", connection)
+
+    df = pd.read_sql("select longitude as long, latitude as lat, country_txt, \
+                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills \
+                        from main \
+                        where region_txt in ('South Asia', 'Central Asia', 'Southeast Asia', 'East Asia') \
+                        and success = '1' and iyear = '2017' and longitude != '' \
+                        group by longitude, latitude, country_txt", connection)
     return df.to_csv(index = False)
     
 

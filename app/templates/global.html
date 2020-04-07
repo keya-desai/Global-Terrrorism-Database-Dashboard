@@ -69,10 +69,10 @@
 	    
 	    <div class="col-sm-10" >
 
-		      <div class="well">
+		      <!-- <div class="well">
 		        <h4>Dashboard</h4>
 		        <p>Some text..</p>
-		      </div>
+		      </div> -->
 		      <!-- world map container -->
 		      <!-- <div class="row" style="height: 500px"> -->
 		      		<div class = "well" style="height: 500px; background-color: white; border-color: black">  
@@ -102,8 +102,41 @@
 
 			        	</div>
 			        </div>
-		      <!-- </div> -->
+		      
+			  <!-- line plot -->
+		      <div class = "row">
+		      	<div class = "col-sm-12">
+		      		<div class = "well" style=" margin-top: 50px; height: 500px">
+		      			<div id = "linePlotDiv" style="height: 100%; height: 100%">
+			      			<!-- Resources -->
+							<script src="https://www.amcharts.com/lib/4/core.js"></script>
+							<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+							<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+			      			<script type="text/javascript" src="{{url_for('static', filename = 'js/globalLinePlot.js') }} "></script>
+		      			</div>
 
+		      		</div>
+		      	</div>
+		      </div>
+
+		      <!-- bar race -->
+		      <div class = "row">
+		      	<div class = "col-sm-12">
+		      		<div class = "well" style=" margin-top: 50px; height: 500px">
+		      			<p> Bar race chart of number of attacks </p>
+		      			<div id = "barRaceChart" style="height: 100%; height: 100%">
+			      			<!-- Resources -->
+							<script src="https://www.amcharts.com/lib/4/core.js"></script>
+							<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+							<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+			      			<script type="text/javascript" src="{{url_for('static', filename = 'js/barRace.js') }} "></script>
+		      			</div>
+
+		      		</div>
+		      	</div>
+		      </div>
+
+		      <!-- word cloud -->
 		      <div class = "row">
 		      	<div class = "col-sm-12">
 		      		<div class = "well" style=" margin-top: 50px; height: 500px">

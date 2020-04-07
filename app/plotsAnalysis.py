@@ -78,12 +78,12 @@ class Plots:
 	    df_pie = pd.read_sql("select eventid, iyear as year, region_txt from main where success = '1'", connection)   
 	    # df_new = df_pie.groupby(['iyear','region_txt'], as_index=False).count().rename(columns={"eventid": "Occurence", "iyear":"year"})
 	    df_new = df_pie
-	    print(df_new)
+	    # print(df_new)
 	    # max_per_yr_region = 0
 	    years = np.arange(1970, 2017)
 	    for rgn in self.region:
 	        per_region = np.asarray(df_new[(df_new.region_txt == self.region[rgn])].groupby('year').year.count())
-	        print(per_region)
+	        # print(per_region)
 	        # if max(per_region) > max_per_yr_region:
 	        #     max_per_yr_region = max(per_region)
 	        t = go.Scatter(
@@ -416,7 +416,7 @@ class Plots:
 	                            + attack_wounds[i].astype(str) + ' Wounded')
 	            # print(attack_categories)
 
-	        print("attack count", attack_count)
+	        # print("attack count", attack_count)
 	            
 	        attack_data = [go.Scatter(
 	                x = attack_wounds,
