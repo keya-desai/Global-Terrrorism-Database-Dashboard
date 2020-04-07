@@ -70,7 +70,7 @@ function createMap(svg, data) {
   //   .await()
 
   addBubbles(mapContainer, projection);
-   
+
 }
 
 
@@ -80,19 +80,26 @@ function addBubbles(mapContainer, projection){
 
   // var color = #F08080
   markers = [];
-  d3.csv("/get_csv_data_scatter ", function(error, bubbledata){
+  d3.csv("/get_csv_data_scatter/1970", function(error, bubbledata){
     if(error) {console.error(error)}
 
       bubbledata.forEach(function(d) {
-        markers.push({long : d.long , lat : d.lat, size: d.kills});
+        markers.push({long : d.long , lat : d.lat, size: d.kills,
+                      wounds : d.wounds, state: d.provstate, city: d.city,
+                      country : d.country_txt, summary : d.summary, gname: d.gname,
+                      motive: d.motive, location : d.location, attack: d.attacktype1_txt,
+                       target: d.targtype1_txt, weapon: d.weaptype1_txt, gname: d.gname,
+                        year : d.iyear});
+        // markers.push({long : d.long , lat : d.lat, size: d.kills})
       });
+
     
     // console.log("hi there");
     console.log(markers)
 
     var size = d3.scaleLinear()
-      .domain([1,200])  // What's in the data
-      .range([ 1, 3])  // Size in pixel
+      .domain([1, 50])  // What's in the data
+      .range([ 1, 25])  // Size in pixel
 
 
     var Tooltip = d3.selectAll("body")
@@ -108,15 +115,22 @@ function addBubbles(mapContainer, projection){
       var offsets = document.getElementById('textbox').getBoundingClientRect();
       var top = offsets.top;
       var left = offsets.left;
-      console.log(top)
-      console.log(left)
       Tooltip
-        .html("long: " + d.long + "<br>" + "lat: " + d.lat + "<br>" + "killed: " + d.size )
-        .style("left", (left + 5) + "px")
-        .style("top", (top + 5) + "px");
+        .html("Year: " + d.year +  "<br>" + "country: " + d.country + "<br>" +"state: " + d.state + "<br>" + "city: " + d.city 
+              + "<br>" + "location: " + d.location + "<br>" + "long: " + d.long + "<br>" + "lat: " + d.lat 
+              + "<br>" + "killed: " + d.size 
+              + "<br>" +"wounds: " + d.wounds 
+              + "<br>" +"Attack type: " + d.attack
+              + "<br>" +"Target type: " + d.target
+              + "<br>" +"Weapon: " + d.weapon
+              + "<br>" +"Gang name: " + d.gname
+              + "<br>" + "summary: " + d.summary 
+              + "<br>" + "motive: " + d.motive)
+        .style("left", (left + 10) + "px")
+        .style("top", (top + 70) + "px");
         // .style("left", (d3.mouse(this)[0]-20) + "px")
         // .style("top", (d3.mouse(this)[1] -20) + "px")
-      console.log("In mousemove");
+      // console.log("In mousemove");
       
     }
     var mouseleave = function(d) {
@@ -124,7 +138,7 @@ function addBubbles(mapContainer, projection){
     }
 
     mapContainer
-        .selectAll("myCircles")
+        .selectAll("circle")
         .data(markers)
         .enter()
         .append("circle")
@@ -138,16 +152,55 @@ function addBubbles(mapContainer, projection){
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave);
+
+    d3.select("#time").on("input", function() {
+          update(+this.value, mapContainer, projection, mouseleave, mousemove, mouseover, size);
+          });
+
       
   });
+}
+    
+
+function update(value, mapContainer, projection, mouseleave, mousemove, mouseover, size){
+
+      
+      document.getElementById("timeval").innerHTML = value;
+      console.log(value)  
+
+      markers = []
+
+      d3.csv("/get_csv_data_scatter/" + value, function(error, bubbledata){
+        if(error) {console.error(error)}
+
+        bubbledata.forEach(function(d) {
+            markers.push({long : d.long , lat : d.lat, size: d.kills,
+                          wounds : d.wounds, state: d.provstate, city: d.city,
+                          country : d.country_txt, summary : d.summary, gname: d.gname,
+                          motive: d.motive, location : d.location, attack: d.attacktype1_txt,
+                           target: d.targtype1_txt, weapon: d.weaptype1_txt, gname: d.gname, year: d.iyear});
+          })
+        // console.log(markers);
+
+        var circle = mapContainer.selectAll("circle")
+                          .data(markers);
+
+        circle.exit().remove();
+        circle.enter().append("circle")
+              .attr("r", function(d){ return size(d.size) })
+              .merge(circle)
+              .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
+              .attr("cy", function(d){ return projection([d.long, d.lat])[1] })   
+              .style("fill", "69b3a2")
+              .attr("stroke", "#69b3a2")
+              .attr("stroke-width", 3)
+              .attr("fill-opacity", .4)
+              .on("mouseover", mouseover)
+              .on("mousemove", mousemove)
+              .on("mouseleave", mouseleave);
 
 
-
-
-
-
-
-
+      })
+      
 
 }
-// });

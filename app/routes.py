@@ -1,4 +1,4 @@
-from flask import render_template, after_this_request, Response
+from flask import render_template, current_app
 from app import app
 # from app.models import DataBase
 # from app import session
@@ -68,7 +68,9 @@ def get_csv_data_slider():
 @app.route('/get_csv_data_dropdown', methods=['GET'])
 def get_csv_data_dropdown():
     df = pd.read_sql("select sum(case when nkill = '' then 0 else cast(nkill as int)  end) as num_deaths, count(country_txt) as num_attacks, \
-        country_txt as name, iyear as iyear  from main group by country_txt, iyear", connection)
+        country_txt as name, iyear as iyear  from main \
+        where success = '1' \
+        group by country_txt, iyear", connection)
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
     # return Response(df.to_csv(index = False), mimetype='text/csv')
     return df.to_csv(index = False)
@@ -131,21 +133,52 @@ def cal_date(row):
   return date
 
 
-@app.route('/get_csv_data_scatter')
-def get_csv_data_scatter():
-    # asia_country_list = ["India", "Afghanistan", "Nepal", "China", "North Korea"]
-    # df = pd.read_sql("select longitude as long, latitude as lat, \
-    #     sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills from main \
-    #     where region_txt = 'South Asia' \
-    #     group by longitude, latitude", connection)
 
-    df = pd.read_sql("select longitude as long, latitude as lat, country_txt, \
-                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills \
-                        from main \
-                        where region_txt in ('South Asia', 'Central Asia', 'Southeast Asia', 'East Asia') \
-                        and success = '1' and iyear = '2017' and longitude != '' \
-                        group by longitude, latitude, country_txt", connection)
+@app.route('/get_csv_data_scatter/<int:year>')
+def get_csv_data_scatter(year):
+    df = pd.read_sql("select country_txt, longitude as long, latitude as lat, provstate, city, location, summary, attacktype1_txt, targtype1_txt, weaptype1_txt, motive, gname, iyear, \
+                    (case when nkill = '' then 0 else cast(nkill as int)  end) as kills,\
+                    (case when nwound = '' then 0 else cast(nwound as int)  end) as wounds \
+                    from main\
+                    where region_txt in ('South Asia', 'Central Asia', 'Southeast Asia', 'East Asia') \
+                    and success = '1' and iyear = '" + str(year) + "' and longitude != '' ", connection )
+    
+    # print("data read")
+    # print(df)
+    # print(year)
+
     return df.to_csv(index = False)
+
+    # df_2 = pd.read_sql("select count(country_txt) as num_attacks, country_txt, region_txt, iyear from main where success = '1' group by country_txt,region_txt, iyear", connection)
+    # # df_2 = gt_data.groupby(['region_txt','country_txt','iyear'],as_index=False).agg({"success": "sum"})
+    # # df_2.head()
+
+
+    # region_list = df_2['region_txt'].unique()
+    # # print(region_list)
+
+    # data = {}
+    # for region in region_list:
+    #   region = str(region)
+    #   r_df = df_2[(df_2['region_txt'] == region)]
+    #   c_list = r_df['country_txt'].unique()
+    #   reg_list = []
+    #   for c in c_list:
+    #     c = str(c)
+    #     temp_list = []
+    #     temp_list.append(c)
+    #     c_df = r_df[(r_df['country_txt'] == c)]
+    #     for y in range(1970,2018):
+    #       y = str(y)
+    #       y_df = c_df[(c_df['iyear'] == y)]
+    #       if not y_df.empty:
+    #         temp_list.append(int(y_df['num_attacks']))
+    #       else:
+    #         temp_list.append(int(0))
+    #     reg_list.append(temp_list)
+    #   data[region] = reg_list
+    # print(data)
+
     
 
 
