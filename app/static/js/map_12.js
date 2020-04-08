@@ -38,8 +38,9 @@
       var data_attacks = d3.map();
       var data_deaths = d3.map();
       var colorScale = d3.scaleThreshold()
-        .domain([1, 5, 10, 15, 20, 25, 30])
-        .range(d3.schemeBlues[7]);
+        .domain([1, 100, 250, 500, 750, 1000])
+        // .domain([1,2000])
+        .range(d3.schemeBlues[6]);
 
 
       // markers = []
@@ -62,7 +63,8 @@
         //  })
         .await(ready);
 
-
+// background: rgba(0, 0, 0, 0.6);
+//         color: #FFA500;
      
       // A simple promise that resolves after a given time
 
@@ -71,8 +73,8 @@
                   .style("position", "absolute")
                   .style("z-index", "10")
                   .style("visibility", "hidden")
-                  .style("background", "#101820FF ")
-                  .style("color", "white")
+                  .style("background", "rgba(0, 0, 0, 0.6)")
+                  .style("color", "#FFA500")
                   .style("width", "120px")
                   .style("text-align", "center")
                   .style("border-radius", "6px")
@@ -97,8 +99,15 @@
                   .style("stroke", "black")
 
                 var dropdown = document.getElementById("selectButton").value
+                if(dropdown == 'num_attacks'){
+                  tooltip.html("Country: " + d.properties.name + "<br>"+ "Attacks: " + d.total);
+                  // console.log("In tootltip attacks")
+                }
+                else{
+                    tooltip.html("Country: " + d.properties.name + "<br>" + "Deaths: " + d.total);
+                }
 
-                tooltip.text("Country : " + d.properties.name + "   " + dropdown + " : " + d.total );
+                // tooltip.text("Country : " + d.properties.name + "   " + dropdown + " : " + d.total );
           
           return tooltip.style("visibility", "visible")
         }

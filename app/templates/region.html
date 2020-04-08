@@ -51,6 +51,7 @@
           <!-- scatter plot -->
           <div class = "row">
             <div class = "well" style="height: 750px; background-color: white; border-color: black">  
+              <h4 style="margin-left: 20px"> Region: Asia </h4>
                 <div class="col-sm-3" style="height: 100%">
                     <div id="sliderContainer">
                       <input id="time" type="range" min="1970" max="2017" value="1970" step="1"/>
@@ -63,7 +64,7 @@
 
                 <div class="col-sm-9" style="height: 100%">
                     <div id="chart" style="height: 100%;">
-                      <svg viewBox='0 0 700 600' preserveAspectRatio='xMinYMin'/>
+                      <svg viewBox='0 0 700 550' preserveAspectRatio='xMinYMin'/>
                     </div> 
                     <script src="https://d3js.org/d3.v3.js"></script>
                     <script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
@@ -79,6 +80,7 @@
           <div class = "row">
             <div class = "col-sm-12">
               <div class = "well" style=" margin-top: 50px; height: 750px">
+                <h4> Regional distribution of terror events </h4>
                 <div id = "radarDiv" style="height: 100%; height: 100%; background-color: white">
 
                   <script src="https://www.amcharts.com/lib/4/core.js"></script>
@@ -90,7 +92,47 @@
               </div>
             </div>
           </div>
-              
+
+          <!-- region attack -->
+          <!-- <div class = "row">
+            <div class = "col-sm-12">
+              <div class = "well" style=" margin-top: 50px; height: 750px">
+                <div id = "bubbleAttack" style="height: 100%; height: 100%; background-color: white">
+
+               <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+                  <script type="text/javascript">
+
+                            var graphs = {{reg_attack | safe}};
+                            var layout = {
+                                title : 'Attack Type Distribution in North America (1970-2017)',
+                                annotations : graphs.annot,
+                                xaxis : {
+                                    title : 'Wounds',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                        },
+                                yaxis : {
+                                    title : 'Kills',
+                                    type : 'log',
+                                    tickmode : 'auto',
+                                    nticks : 4,
+                                    showline : true
+                                }
+                            }
+                            
+                            Plotly.newPlot('bubbleAttack', graphs.data, layout);
+
+
+                  </script>
+                </div>
+
+              </div>
+            </div>
+          </div>
+               -->
 
 
       </div>
