@@ -31,16 +31,16 @@ def region():
 
     plots = plotsAnalysis.Plots()
     # line = create_plot_attack_per_year(connection)
-    attack_pie = plots.create_attack_pie()
-    target_pie = plots.create_target_pie()
-    weapon_pie = plots.create_weapon_pie()
-    region_line = plots.attack_per_region()
-    reg_map = plots.region_map()
-    reg_target = plots.region_target()
-    reg_weapon = plots.region_weapon()
+    # attack_pie = plots.create_attack_pie()
+    # target_pie = plots.create_target_pie()
+    # weapon_pie = plots.create_weapon_pie()
+    # region_line = plots.attack_per_region()
+    # reg_map = plots.region_map()
+    # reg_target = plots.region_target()
+    # reg_weapon = plots.region_weapon()
     reg_attack = plots.region_attack()
 
-    return render_template('region.html', title='Global Terrorism Analysis', plot1 = attack_pie, plot2 = target_pie, plot3 = weapon_pie, region_line = region_line, plot5 = reg_map, reg_target = reg_target, reg_weapon = reg_weapon, reg_attack = reg_attack)
+    return render_template('region.html', reg_attack = reg_attack)
 
 
 @app.route('/country')
@@ -192,10 +192,47 @@ def get_csv_data_lineplot(country):
                         where country_txt = '" + country +"' \
                         group by iyear, country_txt\
                         order by iyear ", connection)
-    print(country)
+    # print(country)
 
     return df.to_csv(index = False)
 
+
+@app.route('/get_csv_attack_donutchart/<country>')
+def get_csv_attack_donutchart(country):
+
+    df = pd.read_sql("select count(eventid), attacktype1_txt,  country_txt\
+                        from main \
+                        where country_txt = '" + country +"' \
+                        group by attacktype1_txt,  country_txt", connection)
+                            # print(country)
+    print("Attack")
+    print(df)
+    return df.to_csv(index = False)
+
+@app.route('/get_csv_target_donutchart/<country>')
+def get_csv_target_donutchart(country):
+
+    df = pd.read_sql("select count(eventid), targtype1_txt,  country_txt\
+                        from main \
+                        where country_txt = '" + country +"' \
+                        group by targtype1_txt,  country_txt", connection)
+                            # print(country)
+    print("Target")
+    print(df)
+    return df.to_csv(index = False)
+
+@app.route('/get_csv_weapon_donutchart/<country>')
+def get_csv_weapon_donutchart(country):
+
+    df = pd.read_sql("select count(eventid), weaptype1_txt,  country_txt\
+                        from main \
+                        where country_txt = '" + country +"' \
+                        group by weaptype1_txt,  country_txt", connection)
+                            # print(country)
+
+    print("Weapon")
+    print(df)
+    return df.to_csv(index = False)
 
 
 # setting up sql alchemy
