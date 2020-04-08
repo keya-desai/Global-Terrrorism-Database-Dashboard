@@ -59,7 +59,7 @@
              <!-- country stacked bar -->
           <div class = "row">
             <div class = "col-sm-12">
-              <div class = "well" style=" margin-top: 50px; height: 750px">
+              <div class = "well" style=" margin-top: 50px; height: 500px">
                 <div id = "stackedDiv" style="height: 100%; height: 100%; background-color: white">
 
                   <script src="https://www.amcharts.com/lib/4/core.js"></script>
@@ -73,18 +73,56 @@
             </div>
           </div>
 
-          <!-- heatmap -->
-           <!-- <div class = "row">
-              <div class = "well">
+          <!-- donut charts -->
+          <div class = "row">
+            <div class = "col-sm-12">
+              <div class = "well" style=" margin-top: 50px; height: 500px">
+                <div id = "attackDonutDiv" style="height: 100%; background-color: white">
 
-                    <script type="text/javascript">
-                      d3.csv('get_csv_data_terrorist', function(error, data){
-                        if(error) {console.error(error)}
-                      })
-                    </script>
+                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script src="https://d3js.org/d3.v3.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
+                </div>
 
               </div>
-          </div> -->
+            </div>
+          </div>
+
+          <!-- donut charts -->
+          <div class = "row">
+            <div class = "col-sm-12">
+              <div class = "well" style=" margin-top: 50px; height: 500px">
+                <div id = "targetDonutDiv" style="height: 100%; background-color: white">
+
+                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script src="https://d3js.org/d3.v3.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- donut charts -->
+          <div class = "row">
+            <div class = "col-sm-12">
+              <div class = "well" style=" margin-top: 50px; height: 500px">
+                <div id = "weaponDonutDiv" style="height: 100%; background-color: white">
+
+                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script src="https://d3js.org/d3.v3.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
+                </div>
+
+              </div>
+            </div>
+          </div>
 
       </div>
   
