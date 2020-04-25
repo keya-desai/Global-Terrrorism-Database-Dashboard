@@ -102,16 +102,61 @@
 			height: 90%;
 			width: 100%;
 			line-height: 1.5;
-		    font-weight: 400;
-		    font-family:"avenir next", Arial, sans-serif;
-		    padding: 6px;
-		    background: rgba(0, 0, 0, 0.6);
-		    color: #FFA500;
-		    border-radius: 1px;
-		    pointer-events: none;
-		    white-space: nowrap; 
-		    text-overflow: ellipsis;
+	    font-weight: 400;
+	    font-family:"avenir next", Arial, sans-serif;
+	    padding: 6px;
+	    background: rgba(0, 0, 0, 0.6);
+	    color: #FFA500;
+	    border-radius: 1px;
+	    pointer-events: none;
+	    white-space: nowrap; 
+	    text-overflow: ellipsis;
 		}
+
+    #countryButton{
+      background: white;
+      color: #2d98da;
+    }
+/*
+		#path1 {
+                stroke:white;
+                stroke-width: 0.5px;
+                fill:#EBEBE0;
+            }*/
+
+    #float-button-group {
+        position:fixed;
+        left:10;
+        opacity:0.5;
+    }
+
+    #float-button-group:hover {
+        opacity:1;
+    }
+
+    #map {
+        background: skyblue;
+        width: 965px;
+        height: 505px;
+        border: 3px solid steelblue;
+        cursor: pointer;
+    }
+
+    #map-zoomer {
+        position:absolute;
+        writing-mode: bt-lr;
+        -webkit-appearance: slider-vertical;
+        width: 8px;
+        height: 100px;
+        padding: 0 5px;
+        position: absolute;
+        top:110px;
+        left:22px;
+    }
+
+    .feature.active {
+       fill: orange;
+   }
 
         
 

@@ -18,6 +18,7 @@ am4core.useTheme(am4themes_animated);
 var chart = am4core.create("linePlotDiv", am4charts.XYChart);
 
 // Add data
+// chart.data = data
 chart.data = [
 {"year":  "1970", "attacks": 651, "deaths": 174}, 
 {"year":  "1971", "attacks": 471, "deaths": 173}, 
@@ -68,6 +69,7 @@ chart.data = [
 {"year":  "2016", "attacks": 10900, "deaths": 26445}
 ];
 
+console.log(chart.data)
 // Set input format for the dates
 chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
 
@@ -144,13 +146,16 @@ chart.scrollbarY = new am4core.Scrollbar();
 chart.scrollbarY.parent = chart.leftAxesContainer;
 chart.scrollbarY.toBack();
 
+
 // Create a horizontal scrollbar with previe and place it underneath the date axis
 chart.scrollbarX = new am4charts.XYChartScrollbar();
 chart.scrollbarX.series.push(series);
 chart.scrollbarX.parent = chart.bottomAxesContainer;
+// console.log(chart.xAxes)
 
 /* Add legend */
 chart.legend = new am4charts.Legend();
 
 dateAxis.start = 0.79;
 dateAxis.keepSelection = true;
+

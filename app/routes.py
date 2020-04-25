@@ -21,6 +21,14 @@ def worldmap():
     return render_template('global.html')
     # return render_template('worldmap.html', title='World map')
 
+@app.route('/trends')
+def trends():
+    return render_template('trends_1.html')
+
+@app.route('/country_final')
+def country_final():
+    return render_template('country_final.html')
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
@@ -50,6 +58,31 @@ def country():
 
 
 
+@app.route('/get_data_top_cities/<country>', methods=['GET'])
+def get_data_top_cities(country):
+    df = pd.read_sql("select count(eventid) as num_attacks, \
+                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills, city\
+                        from main\
+                        where country_txt = '" + country +"' \
+                        group by city\
+                        order by num_attacks desc\
+                        limit 10", connection)
+    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
+    # return Response(df.to_csv(index = False), mimetype='text/csv')
+    return df.to_json(orient = 'records')
+
+@app.route('/get_data_country_year_att_kills')
+def get_data_country_year_att_kills():
+    df = pd.read_sql("select count(eventid) as attacks, \
+                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as kills, \
+                        country_txt, iyear \
+                        from main \
+                        where success = '1' \
+                        group by country_txt, iyear \
+                        ", connection)
+    
+    # df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main where iyear = '1970' group by country_txt  ", connection)
+    return df.to_csv(index = False)
 
 @app.route('/get_csv_data')
 def get_csv_data():
@@ -140,8 +173,22 @@ def get_csv_data_scatter(year):
                     (case when nkill = '' then 0 else cast(nkill as int)  end) as kills,\
                     (case when nwound = '' then 0 else cast(nwound as int)  end) as wounds \
                     from main\
-                    where region_txt in ('South Asia', 'Central Asia', 'Southeast Asia', 'East Asia') \
-                    and success = '1' and iyear = '" + str(year) + "' and longitude != '' ", connection )
+                    where success = '1' and iyear = '" + str(year) + "' and longitude != '' ", connection )
+    
+    # print("data read")
+    # print(df)
+    # print(year)
+    # where region_txt in ('South Asia', 'Central Asia', 'Southeast Asia', 'East Asia') \
+
+    return df.to_csv(index = False)
+
+@app.route('/get_csv_world_scatter/<int:year>')
+def get_csv_world_scatter(year):
+    df = pd.read_sql("select country_txt, longitude as long, latitude as lat, provstate, city, location, summary, attacktype1_txt, targtype1_txt, weaptype1_txt, motive, gname, iyear, \
+                    (case when nkill = '' then 0 else cast(nkill as int)  end) as kills,\
+                    (case when nwound = '' then 0 else cast(nwound as int)  end) as wounds \
+                    from main\
+                    and success = '1' and iyear = '" + str(year) + "'and longitude != '' ", connection )
     
     # print("data read")
     # print(df)
