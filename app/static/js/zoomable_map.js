@@ -56,6 +56,7 @@ var textContainer = d3.select("#text_info")
                         .attr("width", 200)
                         .attr("height", 50);
 
+
 d3.json('/static/json/world-110m2.json', function (error, data) {
 
     g.selectAll("path")
@@ -553,70 +554,32 @@ function update(value, mapContainer, projection, mouseleave, mousemove, mouseove
 }
 
 
+
 function linePlot(country){
     console.log(country)
     // country = "Worldwide"
 
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create("linePlotDiv", am4charts.XYChart);
-    var data = [];
+    var data = []
     if(country == "Worldwide"){
-            data = [
-                    {"year":  "1970", "attacks": 651, "deaths": 174}, 
-                    {"year":  "1971", "attacks": 471, "deaths": 173}, 
-                    {"year":  "1972", "attacks": 568, "deaths": 566}, 
-                    {"year":  "1973", "attacks": 473, "deaths": 370}, 
-                    {"year":  "1974", "attacks": 581, "deaths": 539}, 
-                    {"year":  "1975", "attacks": 740, "deaths": 617}, 
-                    {"year":  "1976", "attacks": 923, "deaths": 674}, 
-                    {"year":  "1977", "attacks": 1319, "deaths": 456}, 
-                    {"year":  "1978", "attacks": 1526, "deaths": 1459}, 
-                    {"year":  "1979", "attacks": 2662, "deaths": 2100}, 
-                    {"year":  "1980", "attacks": 2662, "deaths": 4400}, 
-                    {"year":  "1981", "attacks": 2586, "deaths": 4851}, 
-                    {"year":  "1982", "attacks": 2544, "deaths": 5136}, 
-                    {"year":  "1983", "attacks": 2870, "deaths": 9444}, 
-                    {"year":  "1984", "attacks": 3495, "deaths": 10450}, 
-                    {"year":  "1985", "attacks": 2915, "deaths": 7094}, 
-                    {"year":  "1986", "attacks": 2860, "deaths": 4976}, 
-                    {"year":  "1987", "attacks": 3183, "deaths": 6482}, 
-                    {"year":  "1988", "attacks": 3721, "deaths": 7208}, 
-                    {"year":  "1989", "attacks": 4324, "deaths": 8152}, 
-                    {"year":  "1990", "attacks": 3887, "deaths": 7148}, 
-                    {"year":  "1991", "attacks": 4683, "deaths": 8429}, 
-                    {"year":  "1992", "attacks": 5071, "deaths": 9742}, 
-                    {"year":  "1993", "attacks": 3456, "deaths": 7690}, 
-                    {"year":  "1994", "attacks": 3081, "deaths": 6103}, 
-                    {"year":  "1995", "attacks": 3058, "deaths": 6966}, 
-                    {"year":  "1996", "attacks": 3197, "deaths": 10924}, 
-                    {"year":  "1997", "attacks": 934, "deaths": 4688}, 
-                    {"year":  "1998", "attacks": 1395, "deaths": 3393}, 
-                    {"year":  "1999", "attacks": 1814, "deaths": 4403}, 
-                    {"year":  "2000", "attacks": 1906, "deaths": 7729}, 
-                    {"year":  "2001", "attacks": 1333, "deaths": 4805}, 
-                    {"year":  "2002", "attacks": 1278, "deaths": 3317}, 
-                    {"year":  "2003", "attacks": 1166, "deaths": 5743}, 
-                    {"year":  "2004", "attacks": 2017, "deaths": 6331}, 
-                    {"year":  "2005", "attacks": 2758, "deaths": 9380}, 
-                    {"year":  "2006", "attacks": 3242, "deaths": 12824}, 
-                    {"year":  "2007", "attacks": 4805, "deaths": 9157}, 
-                    {"year":  "2008", "attacks": 4721, "deaths": 9273}, 
-                    {"year":  "2009", "attacks": 4826, "deaths": 7827}, 
-                    {"year":  "2010", "attacks": 5076, "deaths": 8246}, 
-                    {"year":  "2011", "attacks": 8522, "deaths": 15497}, 
-                    {"year":  "2012", "attacks": 12036, "deaths": 22273}, 
-                    {"year":  "2013", "attacks": 16903, "deaths": 44490}, 
-                    {"year":  "2014", "attacks": 14965, "deaths": 38853}, 
-                    {"year":  "2015", "attacks": 13587, "deaths": 34871}, 
-                    {"year":  "2016", "attacks": 10900, "deaths": 26445}
-                    ];
 
-              
+       d3.csv('/get_data_world', function(error, data_){
+                if(error){console.error(error)}
+                data_.forEach(function(p,i){
+                    data.push({"year":p.iyear.toString(), "attacks": parseInt(p.attacks) , "deaths": parseInt(p.deaths)})
+                })
+            console.log(data)
+            chart.data = data
+        });
+
+
     }
 
     else{
-        byCountry.filterExact(country);
+        var data = [];
         var prev_year = 2017;
+        byCountry.filterExact(country);
         byYear.top(Infinity).forEach(function(p, i) {
           // console.log(p.iyear + ": " + p.attacks + ": " + p.kills)
             if(prev_year - parseInt(p.iyear) > 1){
@@ -643,13 +606,12 @@ function linePlot(country){
         data.reverse()
         byYear.filterAll()
         byCountry.filterAll()
-    }
+        chart.data = data
+        
+    }    
 
+    // console.log(chart.data)
     
-    console.log(data)
-
-    // Add data
-    chart.data = data
 
     // Set input format for the dates
     chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";

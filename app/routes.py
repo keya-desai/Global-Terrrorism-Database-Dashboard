@@ -55,6 +55,15 @@ def region():
 def country():
     return render_template('country.html')
 
+@app.route('/get_data_world')
+def get_data_world():
+    df = pd.read_sql("select iyear, count(eventid) as attacks, \
+                    sum(case when nkill = '' then 0 else cast(nkill as int)  end) as deaths\
+                    from main\
+                    where success = '1'\
+                    group by iyear", connection)
+    
+    return df.to_csv(index = False)
 
 
 
@@ -80,7 +89,7 @@ def get_data_country_year_att_kills():
                         where success = '1' \
                         group by country_txt, iyear \
                         ", connection)
-    
+    df.loc[(df.country_txt == 'United States'), 'country_txt'] = 'USA'
     # df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main where iyear = '1970' group by country_txt  ", connection)
     return df.to_csv(index = False)
 
