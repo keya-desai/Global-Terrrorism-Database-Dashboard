@@ -70,6 +70,8 @@ chart.scrollbarX.parent = chart.rightAxesContainer;
 chart.scrollbarX.orientation = "vertical";
 chart.scrollbarX.align = "center";
 chart.scrollbarX.exportable = false;
+// chart.scrollbarX.text = "Zoom";
+chart.scrollbarX.tooltipText = "Zoom scale";
 
 // vertical orientation for zoom out button and scrollbar to be positioned properly
 chart.rightAxesContainer.layout = "vertical";
@@ -154,6 +156,7 @@ yearSlider.events.on("rangechanged", function () {
 yearSlider.orientation = "horizontal";
 yearSlider.start = 0.5;
 yearSlider.exportable = false;
+yearSlider.tooltipText = "Year Axis";
 
 chart.data = generateRadarData();
 
@@ -242,6 +245,7 @@ function createRange(name, continentData, index) {
 var slider = yearSliderContainer.createChild(am4core.Slider);
 slider.start = 1;
 slider.exportable = false;
+slider.tooltipText = "Pie Plot to Histogram Scale";
 slider.events.on("rangechanged", function () {
     var start = slider.start;
 
@@ -250,5 +254,6 @@ slider.events.on("rangechanged", function () {
 
     valueAxis.renderer.axisAngle = chart.startAngle;
 })
+chart.exporting.menu = new am4core.ExportMenu();
 
 }); // end am4core.ready()

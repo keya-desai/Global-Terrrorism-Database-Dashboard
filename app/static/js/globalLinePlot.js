@@ -77,10 +77,10 @@ chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
 var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-var title = chart.titles.create();
-title.text = "Number of Attacks and Deaths through the Years (1970-2017)";
-title.fontSize = 25;
-title.marginBottom = 30;
+// var title = chart.titles.create();
+// title.text = "Number of Attacks and Deaths through the Years (1970-2017)";
+// title.fontSize = 25;
+// title.marginBottom = 30;
 
 // Create series
 var series = chart.series.push(new am4charts.LineSeries());

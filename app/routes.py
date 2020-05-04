@@ -29,6 +29,11 @@ def trends():
 def country_final():
     return render_template('country_final.html')
 
+
+@app.route('/analysis')
+def analysis():
+    return render_template('analysis.html')
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
@@ -66,6 +71,52 @@ def get_data_world():
     return df.to_csv(index = False)
 
 
+@app.route('/get_data_terrorist/<country>', methods=['GET'])
+def get_data_terrorist(country):
+    df = pd.read_sql("select count(eventid) as eventid, iyear, gname \
+                        from main\
+                        where country_txt = '" + country +"' and gname!= 'Unknown' \
+                        group by iyear, gname", connection)
+    year = 2011
+    mask = (df['iyear'] > str(year))
+    mask1 = (df['iyear'] <= str(year))
+    df['group'] = ''
+    df['group'][mask] = 'Active'
+    df['group'][mask1] = 'Inactive'
+    df1 = df[['gname','group','eventid']]
+    df2 = df1.groupby(['gname','group'],as_index=False).eventid.count()
+    df3 = df2.loc[df2['eventid'] > 2]
+    
+    return df3.to_csv(index = True)
+
+@app.route('/get_data_aggregate/<country>', methods=['GET'])
+def get_data_aggregate(country):
+    df = pd.read_sql("select a.country_txt, a.attacks, a.deaths, a.wounds, b.successful_attacks, c.iyear, c.max_deaths  from \
+                        (select country_txt, count(eventid) as attacks, \
+                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as deaths,\
+                        sum(case when nwound = '' then 0 else cast(nwound as int)  end) as wounds\
+                        from main\
+                       where country_txt = '" + country +"' \
+                        group by country_txt) as a\
+                        join\
+                        (select count(eventid) as successful_attacks, country_txt\
+                        from main\
+                        where country_txt = '" + country +"' and success = '1'\
+                        group by country_txt) as b\
+                        on a.country_txt = b.country_txt\
+                        join\
+                        (select country_txt, iyear, \
+                        sum(case when nkill = '' then 0 else cast(nkill as int)  end) as max_deaths\
+                        from main\
+                        where country_txt = '" + country +"' \
+                        group by country_txt, iyear\
+                        order by max_deaths desc\
+                        limit 1) as c\
+                        on b.country_txt = c.country_txt", connection)
+    
+    return df.to_json(orient = 'records')
+
+
 
 @app.route('/get_data_top_cities/<country>', methods=['GET'])
 def get_data_top_cities(country):
@@ -75,6 +126,28 @@ def get_data_top_cities(country):
                         where country_txt = '" + country +"' \
                         group by city\
                         order by num_attacks desc\
+                        limit 5", connection)
+    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
+    # return Response(df.to_csv(index = False), mimetype='text/csv')
+    return df.to_json(orient = 'records')
+
+@app.route('/get_data_top_countries_deaths', methods=['GET'])
+def get_data_top_countries_deaths():
+    df = pd.read_sql("select sum(case when nkill = '' then 0 else cast(nkill as int)  end) as value, country_txt\
+                        from main\
+                        group by country_txt\
+                        order by value desc\
+                        limit 10", connection)
+    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
+    # return Response(df.to_csv(index = False), mimetype='text/csv')
+    return df.to_json(orient = 'records')
+
+@app.route('/get_data_top_countries_attacks', methods=['GET'])
+def get_data_top_countries_attacks():
+    df = pd.read_sql("select count(eventid) as value, country_txt\
+                        from main\
+                        group by country_txt\
+                        order by value desc\
                         limit 10", connection)
     # df.loc[(df.name == 'United States'), 'name'] = 'USA'
     # return Response(df.to_csv(index = False), mimetype='text/csv')
@@ -163,7 +236,7 @@ def get_json_bar_race():
 
     # print("In json bar race routes.py")
     # print(data["1970"])
-    print(data)
+    # print(data)
     return data
 
 
@@ -178,7 +251,7 @@ def cal_date(row):
 
 @app.route('/get_csv_data_scatter/<int:year>')
 def get_csv_data_scatter(year):
-    df = pd.read_sql("select country_txt, longitude as long, latitude as lat, provstate, city, location, summary, attacktype1_txt, targtype1_txt, weaptype1_txt, motive, gname, iyear, \
+    df = pd.read_sql("select country_txt, longitude as long, latitude as lat, provstate, city, location, summary, attacktype1_txt, targtype1_txt, weaptype1_txt, motive, gname, iyear, scite1, imonth, iday, \
                     (case when nkill = '' then 0 else cast(nkill as int)  end) as kills,\
                     (case when nwound = '' then 0 else cast(nwound as int)  end) as wounds \
                     from main\
@@ -261,8 +334,8 @@ def get_csv_attack_donutchart(country):
                         where country_txt = '" + country +"' \
                         group by attacktype1_txt,  country_txt", connection)
                             # print(country)
-    print("Attack")
-    print(df)
+    # print("Attack")
+    # print(df)
     return df.to_csv(index = False)
 
 @app.route('/get_csv_target_donutchart/<country>')
@@ -273,8 +346,8 @@ def get_csv_target_donutchart(country):
                         where country_txt = '" + country +"' \
                         group by targtype1_txt,  country_txt", connection)
                             # print(country)
-    print("Target")
-    print(df)
+    # print("Target")
+    # print(df)
     return df.to_csv(index = False)
 
 @app.route('/get_csv_weapon_donutchart/<country>')
@@ -286,8 +359,8 @@ def get_csv_weapon_donutchart(country):
                         group by weaptype1_txt,  country_txt", connection)
                             # print(country)
 
-    print("Weapon")
-    print(df)
+    # print("Weapon")
+    # print(df)
     return df.to_csv(index = False)
 
 

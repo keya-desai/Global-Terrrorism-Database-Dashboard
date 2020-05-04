@@ -8,145 +8,151 @@
 
 {% block content%}
 
-<nav class="navbar navbar-inverse visible-xs">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">Logo</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('home') }}">Home</a></li>
-        <li ><a href="{{ url_for('worldmap') }}">Global Trends</a></li>
-        <li><a href="{{ url_for('region') }}">Trends by region</a></li>
-        <li><a href="{{ url_for('country') }}">Trends by country</a></li>
-        <li class="active"><a href="{{ url_for('trends') }}">Trends</a></li>
-        <li><a href="{{ url_for('country_final') }}">Trends</a></li>
-        <!-- <li><a href="#">Geo</a></li> -->
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
 <div class="container-fluid">
   <div class="row content">
-      <div class="col-sm-2 sidenav hidden-xs">
-        <h2>Global Terrorism Ananlysis</h2>
-        <ul class="nav nav-pills nav-stacked">
-          <li><a href="{{ url_for('home') }}">Home</a></li>
-      	<li ><a href="{{ url_for('worldmap') }}">Global Trends</a></li>
-          <li ><a href="{{ url_for('region') }}">Trends by region</a></li>
-          <li><a href="{{ url_for('country') }}">Trends by country</a></li>
-          <li class="active"><a href="{{ url_for('trends') }}">Trends</a></li>
-          <li><a href="{{ url_for('country_final') }}">Trends</a></li>
-        </ul><br>
+     <div class="col-sm-1 sidenav hidden-xs" id="sticky-sidebar">
+        <div class="sticky-top">
+          <h4 id = "title"><a href = "{{ url_for('home') }}" style="color: white">Global Terrorism Analysis</h4>
+          <hr>
+          <ul class="nav nav-pills nav-stacked">
+              <!-- <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li> -->
+               <li class="nav-item"><a class="nav-link active" href="{{ url_for('trends') }}">Trends</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('country_final') }}">Country Statistics</a></li>
+               <li class="nav-item"><a class="nav-link" href="{{ url_for('analysis') }}">Analysis</a></li>
+          </ul><br>
+        </div>
       </div>
       <br>
 
-      	<div class="col-sm-10" >
-      		<div class="row">
-      			<!-- <div class = "well">  -->
-      				<div class="col-sm-3" style="height: 500px;">
+      	<div class="col-sm-11" >
+          <!-- <div class = "row">
+          <div class = "col-sm-3">
+            <div class="well" style="height: 500px"></div>
+            
+           </div>
+           <div class = "col-sm-3">
+            <div class="well" style="height: 500px"></div>
+            
+            </div>
+          </div>
+ -->    <div class = "row" style="margin-top: 10px; margin-left: 20px">
 
-                    <div class = "well" style="height: 30%">
-  			                <div id = "button">
-  			                    <select id = "countryButton">
-  			                    </select>
-  			                </div>
-                        <div id = "text">
-                            <div class="col-sm-6">
-                              <h5> Attacks </h5>
-                            </div>
-                            <div class="col-sm-6">
-                              <h5> Deaths </h5>
-                            </div>
+          <div class="col-sm-3" style="height: 715px;">
+
+                    <div class = "well" style="height: 25%;" id = "infoBox">
+                        <div class = "row">
+                          <h6 id = "heading">Select country to zoom in:</h6>
                         </div>
-                          <div id = "text_info" style="width: 100%">
-                          </div>
+                        <div id = "button" >
+                            <select id = "countryButton" style="margin-left: -15px; color: #e74c3c">
+                            </select>
+                        </div>
+                        <div class = "row" style="margin-top: 10px">
+                          <h6 id = "heading">Select year:</h6>
+                        </div>
+                        
+                          <div class = "row" >
 
-                           <div id="sliderContainer">
-                              <input id="timeslide" type="range" min="1970" max="2017" value="1970" step="1"/>
-                              <span id="range">1970</span>
+                            <!-- <div class="col-sm-6"> -->
+                              <div id="sliderContainer" >
+                                <input id="timeslide" type="range" min="1970" max="2017" value="1970" step="1"/>
+                                <span id="range" style="color: #e74c3c">1970</span>
+                              </div>
+                            <!-- </div> -->
+                            <!-- <div class="col-sm-6"> -->
+                              
+                            <!-- </div> -->
+                          </div>
+                          <div class = "row" style="margin-top: 10px">
+                            <input type="checkbox" id="linkBox" >
+                             <label for="link_on" id = "heading"> Check to see related terror events </label><br>
                           </div>
                       </div>
 
-	                    <div id = "textbox" style="height: 70%">
-	                        <h3> Event Data </h3>
-	                    </div>
-               		</div>
+                          <div id = "textInfo">
+                            <div class = "row" style="margin-top: 10px">
+                              <div class="col-sm-6">
+                                    <h5 style="text-align: center" id = "heading"> Attacks </h5>
+                              </div>
+                              <div class="col-sm-6">
+                                    <h5 style="text-align: left" id = "heading"> Deaths </h5>
+                                </div>
+                            </div>
+                          </div>
 
-               		<div class="col-sm-9" style="height: 500px; width:800px">
-               			<div id="map" style="height: 500px; width:850px">
-      			            <div class="btn-group-vertical" role="group" aria-label="..." id="float-button-group">
-      			                <button type="button" class="btn btn-default" id="zoom-in"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span></button>
-      			                <button type="button" class="btn btn-default" id="zoom-out"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button>
-      			                <button type="button" class="btn btn-default" id="reset"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span></button>
-      			            </div>
-      			            <input type="range" value="1" min="1" max="8" orient="vertical" id="map-zoomer"/>
-			              </div>
+                      <div id = "textbox" style="height: 70%; margin-top: 20px" >
+                          <h3 id = "heading"> Event Data </h3>
+                      </div>
+            </div>
+             <div class="col-sm-9" style="height: 780px;">
+                <div class="row" style="height: 450px; margin-left: 0px; width: 900px">
+                    <div id="map" style="height: 450px;  margin-left: 0px; width: 900px">
 
-    				        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    				        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    				        <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
-    				        <script src="https://d3js.org/topojson.v0.min.js"></script>
-    				        <script src="https://d3js.org/d3.v3.js"></script>
-    				        <script src="//d3js.org/d3.v4.min.js"></script>
+                        <div class="btn-group-vertical" role="group" aria-label="..." id="float-button-group">
+                            <button type="button" class="btn btn-default" id="zoom-in"><i class="material-icons" style="font-size:20px">zoom_in</i></button>
+                            <button type="button" class="btn btn-default" id="zoom-out"><i class="material-icons" style="font-size:20px">zoom_out</i></button>
+                            <button type="button" class="btn btn-default" id="reset"><i class="material-icons" style="font-size:20px">zoom_out_map</i></button>
+                        </div>
+                        <input type="range" value="1" min="1" max="8" orient="vertical" id="map-zoomer"/>
+                    </div>
+
+               </div>
+
+              <div class = "well" style="height: 330px; margin-top: 20px; background-color:#dfe6e9;border-radius: 10px; border: 2px solid #596275; width: 900px">
+                      <div id = "linePlotDiv" style="height: 330px;">
+                      </div>
+                </div>
+
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+                    <script src="https://d3js.org/d3.v3.min.js"></script>
+                    <script src="https://d3js.org/topojson.v0.min.js"></script>
+                    <script src="https://d3js.org/d3.v3.js"></script>
+                    <script src="//d3js.org/d3.v4.min.js"></script>
                     <script src='//alexmacy.github.io/crossfilter/crossfilter.v1.min.js' defer></script>
                     <script src="https://www.amcharts.com/lib/4/core.js"></script>
                     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
                     <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-    				        <script type="text/javascript" src="{{url_for('static', filename = 'js/zoomable_map.js') }}">
-    				        </script>
+                    <script type="text/javascript" src="{{url_for('static', filename = 'js/zoomable_map.js') }}">
+                    </script>
+          </div> 
+ 
 
-               		</div>
+        </div>
 
-      			<!-- </div> -->
-      		</div>
+        <div class = "row" style="margin-top: 50px; height: 500px">
+            <div class = "col-sm-12">
+              <h5 id = "heading"> Bar race chart of number of attacks </h5>
+              <div class = "well" style="height: 500px">
+                <div id = "barRaceChart" style="height: 100%;">
+                  <!-- Resources -->
+                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/barRace.js') }} "></script>
+                </div>
 
-      		<!-- line plot -->
-		      <div class = "row">
-            <div class = "col-sm-3">
+              </div>
             </div>
-		      	<div class = "col-sm-9">
-		      		<div class = "well" style=" margin-top: 50px; height: 400px">
-		      			<div id = "linePlotDiv" style="height: 100%; height: 100%">
-			      		
-						<!-- 	<script src="https://www.amcharts.com/lib/4/core.js"></script>
-							<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-							<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-			      			<script type="text/javascript" src="{{url_for('static', filename = 'js/globalLinePlot.js') }} "></script> -->
-		      			</div>
+        </div>
 
-		      		</div>
-		      	</div>
-		      </div>
+        <div class = "row" style=" margin-top: 50px; height: 750px">
+            <div class = "col-sm-12">
+              <h5 id = "heading"> Regional distribution of terror events </h5>
+              <div class = "well" style="height: 750px">
+                <div id = "radarDiv" style="height: 100%;">
+                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/radarTimeline.js') }} "></script>
+                </div>
 
-      	</div>
+              </div>
+            </div>
+          </div>
 
-        <!-- <div class="col-sm-10" >
-
-        	<div id="map">
-	            <div class="btn-group-vertical" role="group" aria-label="..." id="float-button-group">
-	                <button type="button" class="btn btn-default" id="zoom-in"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span></button>
-	                <button type="button" class="btn btn-default" id="zoom-out"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button>
-	                <button type="button" class="btn btn-default" id="reset"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span></button>
-	            </div>
-	            <input type="range" value="1" min="1" max="8" orient="vertical" id="map-zoomer"/>
-	        </div>
-
-	        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	        <script src="https://d3js.org/d3.v3.min.js"></script>
-	        <script src="https://d3js.org/topojson.v0.min.js"></script>
-	        <script type="text/javascript" src="{{url_for('static', filename = 'js/zoomable_map.js') }}">
-	        </script>
-      </div> -->
   
   </div>
+</div>
 </div>
 {% endblock %}

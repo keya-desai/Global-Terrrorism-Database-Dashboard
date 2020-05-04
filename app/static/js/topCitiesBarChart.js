@@ -8,6 +8,7 @@
 
     country = "United States"    
     d3.json('/get_data_top_cities/' + country, function(error, json_data){
+          console.log(json_data)
           chart.data = json_data
       });
 
@@ -52,4 +53,6 @@
 
     createSeries("num_attacks", "Attacks");
     createSeries("kills", "Deaths");
+
+    
 

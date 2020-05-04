@@ -5,34 +5,73 @@
 	<title>{% block title %}{% endblock %}Dashboard</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></script>
 	
 	<!-- d3.js -->	
-	<script src="http://d3js.org/d3.v4.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<!-- <script src="http://d3js.org/d3.v4.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
 	<style>
+    /* Only stick if you can fit */
+      html, body {
+        height: 100%;
+        background-color: #f1f1f1;
+    }
 	/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 	.row.content {height: 100%}
 
 	/* Set gray background color and 100% height */
 	.sidenav {
-	  background-color: #f1f1f1;
-	  height: 100%;
+	  background-color: #4b6584;
+    color: white;
+	  height: 2200px;
+    /*overflow: auto;*/
+
 	}
 
 	.container-fluid{
+    /*overflow:auto;*/
 		height: 100%;
+    background-color: #f1f1f1;
+
 	}
 
-	html, body {
-		    height: 100%;
-		}
-	.circle:hover{
+  .well{
+    background-color: white;
+    border-radius: 10px;
+    border: 2px solid #596275;
+    padding: 5px;
+    /*background-color:#dfe6e9;*/
+  }
+
+  li a {
+    color: white;
+    font-size: 20px;
+  }
+
+
+  hr {
+  border: 2px solid #a5b1c2;
+  border-radius: 2px;
+  }
+  /*.active{
+    background-color: #fa8231;
+  }*/
+
+	.sticky-top{
+    text-align: left; margin-left: -10px
+  }
+
+  #title{
+    text-align: center; margin-top: 10px
+  }
+
+  .circle:hover{
 	  stroke: black;
 	  stroke-width: 4px;
 	}
@@ -89,7 +128,7 @@
 		    font-family:"avenir next", Arial, sans-serif;
 		    /*padding: 6px;*/
 		    /*background: rgba(0, 0, 0, 0.6);*/
-		    color: #FFA500;
+		    color: #e74c3c;
 		    border-radius: 1px;
 		    pointer-events: none;	
 		    white-space: nowrap; 
@@ -98,20 +137,7 @@
 		    
 		}
 
-		#textbox{
-			height: 90%;
-			width: 100%;
-			line-height: 1.5;
-	    font-weight: 400;
-	    font-family:"avenir next", Arial, sans-serif;
-	    padding: 6px;
-	    background: rgba(0, 0, 0, 0.6);
-	    color: #FFA500;
-	    border-radius: 1px;
-	    pointer-events: none;
-	    white-space: nowrap; 
-	    text-overflow: ellipsis;
-		}
+		
 
     #countryButton{
       background: white;
@@ -125,7 +151,7 @@
             }*/
 
     #float-button-group {
-        position:fixed;
+        position:absolute;
         left:10;
         opacity:0.5;
     }
@@ -158,6 +184,75 @@
        fill: orange;
    }
 
+   #textInfo{
+    /*margin-left: 20px;*/
+    /*width:300px;*/
+
+    margin-top: 20px;
+    height: 80px;
+    background-color: #dfe6e9;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #596275;
+   }
+
+   #infoBox{
+    border-radius: 10px;
+    border: 2px solid #596275;
+    padding: 20px;
+    background-color:#dfe6e9;
+    /*margin-top: 20px; */
+   }
+   #textbox{
+    border-radius: 10px;
+    border: 2px solid #596275;
+    padding: 20px;
+    background-color: #dfe6e9;
+    line-height: 1.5;
+      font-weight: 400;
+      font-family:"avenir next", Arial, sans-serif;
+      padding: 6px;
+       /*border-radius: 1px;*/
+      pointer-events: none;
+      white-space: nowrap; 
+      text-overflow: ellipsis;
+    color: black
+   }
+
+   #heading{
+    color: #192a56;
+   }
+
+   #heading_white{
+    color: white;
+   }
+
+   #countryBox{
+    height: 100px;
+    width: 200px;
+    background-color: #40739e;
+    color: white;
+    text-align: center;
+    padding: 10px;
+   }
+   /*#linkBox{
+
+   }*/
+  /* #textbox{
+      height: 90%;
+      width: 100%;
+      line-height: 1.5;
+      font-weight: 400;
+      font-family:"avenir next", Arial, sans-serif;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.6);
+      background-color: white;
+      color: #FFA500;
+      border-radius: 1px;
+      pointer-events: none;
+      white-space: nowrap; 
+      text-overflow: ellipsis;
+    }*/
         
 
 	</style>
@@ -165,7 +260,10 @@
 	</head>
 
 <body>
-		{% block content %}
-	  	{% endblock %}
+
+
+  		{% block content %}
+  	  	{% endblock %}
+
 </body>
 </html>
