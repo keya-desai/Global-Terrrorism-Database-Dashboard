@@ -1,0 +1,144 @@
+{% extends "dashboard.html" %}
+
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+
+{% block content%}
+<!-- <nav class="navbar navbar-inverse visible-xs">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{{ url_for('home') }}">Global Terrorism Analysis</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('trends') }}">Trends</a></li>
+        <li><a href="{{ url_for('country_final') }}">Country</a></li>
+         <li class="active"><a href="{{ url_for('analysis') }}">Analysis</a></li>
+      </ul>
+    </div>
+
+</nav> -->
+
+
+<div class="container-fluid">
+  <div class="row content">
+      <div class="col-sm-1 sidenav hidden-xs" id="sticky-sidebar">
+        <div class="sticky-top">
+          <h4 id = "title"><a href = "{{ url_for('home') }}" style="color: white">Global Terrorism Analysis</h4>
+          <hr>
+          <ul class="nav nav-pills nav-stacked">
+              <!-- <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li> -->
+               <li class="nav-item"><a class="nav-link" href="{{ url_for('trends') }}">Trends</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('country_final') }}">Country Statistics</a></li>
+               <li class="nav-item"><a class="nav-link active" href="{{ url_for('analysis') }}">Analysis</a></li>
+          </ul><br>
+        </div>
+      </div>
+      <br>
+
+      	<div class="col-sm-11" >
+
+      		<!-- line plot -->
+         
+		      <div class = "row" style="height: 360px; margin-top: 5px">
+            <div class = "col-sm-12" >
+               <h5 id = "heading"> Number of Attacks for Top Terrorist Groups (1970-2017) </h5>
+              <!-- <h2 style="text-align: center;"> Motive word cloud </h2> -->
+              <div class = "well" style="height: 360px">
+                <div id = "terroristDiv" style="height: 100%;">
+                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/terroristLinePlot.js') }} "></script>
+                </div>
+              </div>
+            </div>
+		      </div>
+          
+          <div class = "row" style="height: 360px; margin-top: 50px">
+            <div class = "col-sm-6">
+              <h5 id = "heading"> Timeline of deadliest events </h5>
+              <div class = "well" style="height: 360px">
+                <div id = "eventdiv" style="height: 100%; height: 100%">
+                  <script src="https://www.amcharts.com/lib/4/plugins/timeline.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/timelineEvents.js') }} "></script>
+                </div>
+
+              </div>
+            </div>
+
+              <div class = "col-sm-6">
+              <h5 id = "heading"> Countries most affected by terrorism </h5>
+              <div class = "well" style="height: 360px">
+                <div id = "button">
+                    <select id = "optionButton">
+                    </select>
+                </div>
+                <div id = "topCountBarDiv" style="height: 100%; height: 100%">
+                  <script src="https://d3js.org/d3.v4.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/topCountryBarChart.js') }} "></script>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+           <div class = "row" style="height: 360px; margin-top: 50px">
+            <div class = "col-sm-12" >
+              <h5 id = "heading">Target Type Distribution (Global) </h5>
+              <div class = "well" style="height: 360px">
+                <div id = "targetDiv" style="height: 100%; height: 100%">
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/targetSubType.js') }} "></script>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class = "row" style="height: 360px; margin-top: 50px">
+            <div class = "col-sm-6">
+              <h5 id = "heading"> Weapon Type Distribution (Global) </h5>
+              <div class = "well" style="height: 360px">
+                <div id = "weaponDiv" style="height: 100%; height: 100%">
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/weaponDonut.js') }} "></script>
+                </div>
+
+              </div>
+            </div>
+
+
+              <div class = "col-sm-6">
+              <h5 id = "heading"> Attack Type Distribution (Global) </h5>
+              <div class = "well" style="height: 360px">
+                <div id = "attackDiv" style="height: 100%; height: 100%">
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/attackDonut.js') }} "></script>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class = "row" style="height: 360px; margin-top: 50px">
+            <div class = "col-sm-12" >
+              <h5 id = "heading"> Motive Word Cloud </h5>
+              <div class = "well" style="height: 360px">
+
+                <div id = "wordCloud" style="height: 100%; height: 100% ">
+                  <script src="https://www.amcharts.com/lib/4/plugins/wordCloud.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/wordcloudscript.js') }} "></script>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+
+      	</div>
+
+  
+  </div>
+</div>
+{% endblock %}
