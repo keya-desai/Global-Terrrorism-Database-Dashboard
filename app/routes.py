@@ -19,7 +19,6 @@ def home():
 @app.route('/worldmap')
 def worldmap():
     return render_template('global.html')
-    # return render_template('worldmap.html', title='World map')
 
 @app.route('/trends')
 def trends():
@@ -43,14 +42,6 @@ def dashboard():
 def region():
 
     plots = plotsAnalysis.Plots()
-    # line = create_plot_attack_per_year(connection)
-    # attack_pie = plots.create_attack_pie()
-    # target_pie = plots.create_target_pie()
-    # weapon_pie = plots.create_weapon_pie()
-    # region_line = plots.attack_per_region()
-    # reg_map = plots.region_map()
-    # reg_target = plots.region_target()
-    # reg_weapon = plots.region_weapon()
     reg_attack = plots.region_attack()
 
     return render_template('region.html', reg_attack = reg_attack)
@@ -149,8 +140,7 @@ def get_data_top_countries_attacks():
                         group by country_txt\
                         order by value desc\
                         limit 10", connection)
-    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    # return Response(df.to_csv(index = False), mimetype='text/csv')
+
     return df.to_json(orient = 'records')
 
 @app.route('/get_data_country_year_att_kills')
@@ -178,7 +168,6 @@ def get_csv_data_slider():
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
     return df.to_csv(index = False)
 
-# @app.route('/get_csv_data_dropdown')
 
 @app.route('/get_csv_data_dropdown', methods=['GET'])
 def get_csv_data_dropdown():
@@ -187,7 +176,6 @@ def get_csv_data_dropdown():
         where success = '1' \
         group by country_txt, iyear", connection)
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    # return Response(df.to_csv(index = False), mimetype='text/csv')
     return df.to_csv(index = False)
 
 
@@ -217,7 +205,6 @@ def get_json_bar_race():
       temp = []
       year = str(year)
       temp_df = df[(df['iyear'] == year)]
-      # print(temp_df)
 
       for country in country_list:
         temp_dict = {}
@@ -234,9 +221,6 @@ def get_json_bar_race():
         temp.append(temp_dict)
       data[year] = temp
 
-    # print("In json bar race routes.py")
-    # print(data["1970"])
-    # print(data)
     return data
 
 
@@ -248,7 +232,6 @@ def cal_date(row):
   return date
 
 
-
 @app.route('/get_csv_data_scatter/<int:year>')
 def get_csv_data_scatter(year):
     df = pd.read_sql("select country_txt, longitude as long, latitude as lat, provstate, city, location, summary, attacktype1_txt, targtype1_txt, weaptype1_txt, motive, gname, iyear, scite1, imonth, iday, \
@@ -256,11 +239,6 @@ def get_csv_data_scatter(year):
                     (case when nwound = '' then 0 else cast(nwound as int)  end) as wounds \
                     from main\
                     where success = '1' and iyear = '" + str(year) + "' and longitude != '' ", connection )
-    
-    # print("data read")
-    # print(df)
-    # print(year)
-    # where region_txt in ('South Asia', 'Central Asia', 'Southeast Asia', 'East Asia') \
 
     return df.to_csv(index = False)
 
@@ -271,10 +249,6 @@ def get_csv_world_scatter(year):
                     (case when nwound = '' then 0 else cast(nwound as int)  end) as wounds \
                     from main\
                     and success = '1' and iyear = '" + str(year) + "'and longitude != '' ", connection )
-    
-    # print("data read")
-    # print(df)
-    # print(year)
 
     return df.to_csv(index = False)
 
@@ -288,10 +262,6 @@ def get_csv_data_terrorist():
                     from main\
                     where country_txt = 'United States' and success = '1'\
                     group by  gname, iyear;", connection)
-    # df_3 = gt_data[(gt_data['country_txt'] == "United States")]
-    # gname_df = df_3.groupby(['iyear','gname'],as_index=False).agg({"success": "sum"})
-
-
 
     gname_list = df['gname'].unique()
 
@@ -306,9 +276,7 @@ def get_csv_data_terrorist():
           val = int(y_df['num_attacks'])
         temp_dict = {"gname":name,"year":y,"attacks":val}
         data.append(temp_dict)
-    # print(data)
 
-    # return data.to_csv(index = False)
 
 @app.route('/get_csv_data_lineplot/<country>')
 def get_csv_data_lineplot(country):
@@ -321,7 +289,6 @@ def get_csv_data_lineplot(country):
                         where country_txt = '" + country +"' \
                         group by iyear, country_txt\
                         order by iyear ", connection)
-    # print(country)
 
     return df.to_csv(index = False)
 
@@ -345,7 +312,6 @@ def get_csv_target_donutchart(country):
                         from main \
                         where country_txt = '" + country +"' \
                         group by targtype1_txt,  country_txt", connection)
-                            # print(country)
     # print("Target")
     # print(df)
     return df.to_csv(index = False)
@@ -357,21 +323,9 @@ def get_csv_weapon_donutchart(country):
                         from main \
                         where country_txt = '" + country +"' \
                         group by weaptype1_txt,  country_txt", connection)
-                            # print(country)
 
     # print("Weapon")
     # print(df)
     return df.to_csv(index = False)
 
 
-# setting up sql alchemy
-
-# SQLALCHEMY
-# me = User(username='susan', email='susan@example.com')
-# db.session.add(me)
-# newuser = User(username='admin',
-#                email='admin@example.com')
-# session.add(newuser)
-
-# session.query(DataBase).filter(DataBase.iyear == '1970')
-# # res = connection.execute("Select * from main")
