@@ -1,55 +1,26 @@
 from flask import render_template, current_app
 from app import app
-# from app.models import DataBase
-# from app import session
 from app import connection
 import pandas as pd
-from app import plotsAnalysis
 
 @app.route('/')
-# def layout():
-#     return render_template('layout_side_nav.html', title = 'Global Terrorism Analysis')
-
 @app.route('/home')
 def home():
     return render_template('home.html', title = 'Global Terrorism Analysis')
 
-
-
-@app.route('/worldmap')
-def worldmap():
-    return render_template('global.html')
-
 @app.route('/trends')
 def trends():
-    return render_template('trends_1.html')
-
-@app.route('/country_final')
-def country_final():
-    return render_template('country_final.html')
-
+    return render_template('trends.html')
 
 @app.route('/analysis')
 def analysis():
     return render_template('analysis.html')
 
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
-
-
-@app.route('/region')
-def region():
-
-    plots = plotsAnalysis.Plots()
-    reg_attack = plots.region_attack()
-
-    return render_template('region.html', reg_attack = reg_attack)
-
 
 @app.route('/country')
 def country():
     return render_template('country.html')
+
 
 @app.route('/get_data_world')
 def get_data_world():
@@ -118,8 +89,6 @@ def get_data_top_cities(country):
                         group by city\
                         order by num_attacks desc\
                         limit 5", connection)
-    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    # return Response(df.to_csv(index = False), mimetype='text/csv')
     return df.to_json(orient = 'records')
 
 @app.route('/get_data_top_countries_deaths', methods=['GET'])
@@ -129,8 +98,6 @@ def get_data_top_countries_deaths():
                         group by country_txt\
                         order by value desc\
                         limit 10", connection)
-    # df.loc[(df.name == 'United States'), 'name'] = 'USA'
-    # return Response(df.to_csv(index = False), mimetype='text/csv')
     return df.to_json(orient = 'records')
 
 @app.route('/get_data_top_countries_attacks', methods=['GET'])
@@ -153,13 +120,11 @@ def get_data_country_year_att_kills():
                         group by country_txt, iyear \
                         ", connection)
     df.loc[(df.country_txt == 'United States'), 'country_txt'] = 'USA'
-    # df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main where iyear = '1970' group by country_txt  ", connection)
     return df.to_csv(index = False)
 
 @app.route('/get_csv_data')
 def get_csv_data():
     df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main group by country_txt", connection)
-    # df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name from main where iyear = '1970' group by country_txt  ", connection)
     return df.to_csv(index = False)
 
 @app.route('/get_csv_data_slider')
@@ -167,7 +132,6 @@ def get_csv_data_slider():
     df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name, iyear as iyear from main group by country_txt, iyear", connection)
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
     return df.to_csv(index = False)
-
 
 @app.route('/get_csv_data_dropdown', methods=['GET'])
 def get_csv_data_dropdown():
@@ -177,19 +141,6 @@ def get_csv_data_dropdown():
         group by country_txt, iyear", connection)
     df.loc[(df.name == 'United States'), 'name'] = 'USA'
     return df.to_csv(index = False)
-
-
-
-
-# @app.route('/get_csv_bar_race')
-# def get_csv_bar_race():
-#     df = pd.read_sql("select count(country_txt) as num_attacks, country_txt as name, iyear as iyear, imonth as imonth  from main where success = '1'group by country_txt, iyear, imonth", connection)
-#     df['date'] = df.apply(lambda row: cal_date(row), axis=1)
-#     # df = df.groupby(['name','date'],as_index=False).agg({"success": "sum"})
-#     df.loc[(df.name == 'United States'), 'name'] = 'USA'
-#     print(df)
-#     return df.to_csv(index = False)
-
 
 @app.route('/get_json_bar_race')
 def get_json_bar_race():

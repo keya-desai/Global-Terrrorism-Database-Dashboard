@@ -8,128 +8,170 @@
 
 {% block content%}
 
-<nav class="navbar navbar-inverse visible-xs">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">Logo</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('home') }}">Home</a></li>
-        <li class="active"><a href="{{ url_for('worldmap') }}">Global Trends</a></li>
-        <li><a href="{{ url_for('region') }}">Trends by region</a></li>
-        <li><a href="{{ url_for('country') }}">Trends by country</a></li>
-        <!-- <li><a href="#">Geo</a></li> -->
-      </ul>
-    </div>
-  </div>
-</nav>
-
 <div class="container-fluid">
   <div class="row content">
-      <div class="col-sm-2 sidenav hidden-xs">
-        <h2>Global Terrorism Ananlysis</h2>
-        <ul class="nav nav-pills nav-stacked">
-          <li><a href="{{ url_for('home') }}">Home</a></li>
-      	<li ><a href="{{ url_for('worldmap') }}">Global Trends</a></li>
-          <li ><a href="{{ url_for('region') }}">Trends by region</a></li>
-          <li class="active" ><a href="{{ url_for('country') }}">Trends by country</a></li>
-        </ul><br>
+      <div class="col-sm-1 sidenav hidden-xs" id="sticky-sidebar">
+        <div class="sticky-top">
+          <h4 id = "title"><a href = "{{ url_for('home') }}" style="color: white">Global Terrorism Analysis</h4>
+          <hr>
+          <ul class="nav nav-pills nav-stacked">
+               <li class="nav-item"><a class="nav-link" href="{{ url_for('trends') }}">Trends</a></li>
+              <li class="nav-item"><a class="nav-link active" href="{{ url_for('country') }}">
+              Country Statistics</a></li>
+               <li class="nav-item"><a class="nav-link" href="{{ url_for('analysis') }}">Analysis</a></li>
+          </ul><br>
+        </div>
       </div>
       <br>
 
+      	<div class="col-sm-11" >
 
-        <div class="col-sm-10" >
+      		<!-- line plot -->
+          <div class = "row" style="height: 30px; margin-left: 2px; margin-top: 10px">
+            <div id = "button">
+                <select id = "countryButton">
+                </select>
+            </div>
+          </div>
+		      <div class = "row" style="height: 370px;">
+            <div class = "col-sm-6" >
 
-          <!-- country dropdown -->
-          <div class = "row">
-              <div class = "well">
+              <div class = "well" style="height: 370px">
+                <div id = "mapdiv" style="height: 100%">
+                  <!-- <h5 id = "heading">State-wise Attacks distribution</h5> -->
+                </div>
+
+              </div>
+            </div>
+
+            <!-- <div class = "col-sm-2"></div> -->
+            <div class = "col-sm-2" style="margin-left: 100px;"> 
+              <div class = "row">
+                    <div class = "well" id = "countryBox">
+                      <div id = "text1" style="height: 100%">
+                        <h6>Total Attacks</h6>
+                    </div>
+                  </div>
+              </div>
+               <div class = "row" style="margin-top: 20px;">
+                  
+                      <div class = "well" id = "countryBox">
+                        <div id = "text2" style="height: 100%">
+                        <h6>Total Deaths</h6>
+                      </div>
+                    </div>
+                </div>
+              <div class = "row" style="margin-top: 20px;">
+                
+                    <div class = "well" id = "countryBox">
+                      <div id = "text3"style="height: 100%">
+                      <h6>Total Wounded</h6>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class = "col-sm-2">
+              <div class = "row">
+                
+                      <div class = "well" id = "countryBox">
+                        <div id = "text4"style="height: 100%">
+                        <h6> Total Successful Attacks</h6>
+                      </div>
+                </div>
+              </div>
+               <div class = "row" style="margin-top: 20px;">
+                  
+                    <div class = "well" id = "countryBox">
+                      <div id = "text5"style="height: 100%">
+                      <h6> % of Global Attacks</h6>
+                      
+                    </div>
+                  </div>
+              </div>
+              <div class = "row" style="margin-top: 20px;">
+                 
+                    <div class = "well" id = "countryBox">
+                       <div id = "text6"style="height: 100%">
+                      <h6>Year with maximum casualties</h6>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            
+            
+
+		      </div>
+
+          <div class = "row" style="height: 370px; margin-top: 20px">
+            <div class = "col-sm-6">
+              <h5 id = "heading">Attack/Weapon/Target type distribution </h5>
+              <div class = "well" style="height: 370px">
                 <div id = "button">
-                    <select id = "countryButton">
+                    <select id = "chartButton">
                     </select>
                 </div>
-              </div>
-          </div>
-         
-             <!-- country stacked bar -->
-          <div class = "row">
-            <div class = "col-sm-12">
-              <div class = "well" style=" margin-top: 50px; height: 500px">
-                <div id = "stackedDiv" style="height: 100%; height: 100%; background-color: white">
-
-                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
-                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
-                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-                  <script src="https://d3js.org/d3.v3.js"></script>
-                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
+                <div id = "piediv" style="height: 100%">
                 </div>
 
               </div>
             </div>
-          </div>
-
-          <!-- donut charts -->
-          <div class = "row">
-            <div class = "col-sm-12">
-              <div class = "well" style=" margin-top: 50px; height: 500px">
-                <div id = "attackDonutDiv" style="height: 100%; background-color: white">
-
-                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
-                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
-                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-                  <script src="https://d3js.org/d3.v3.js"></script>
-                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
+              <div class = "col-sm-6">
+                <h5 id = "heading">Top 5 cities with maximum damage</h5>
+                <div class = "well" style="height: 370px">
+                <div id = "chartdiv" style="height: 100%">
                 </div>
-
               </div>
+              
             </div>
           </div>
-
-          <!-- donut charts -->
-          <div class = "row">
+          <div class = "row" style="height: 1500px; margin-top: 50px">
             <div class = "col-sm-12">
-              <div class = "well" style=" margin-top: 50px; height: 500px">
-                <div id = "targetDonutDiv" style="height: 100%; background-color: white">
+              <div class = "well" style="height: 1500px;">
+                  <!-- <div class = "row"> -->
+                    <h5 id = "heading">Responsible Groups for terror events</h5>
+                  <!-- </div> -->
+                  <!-- <div class = "row"> -->
+                    <h7 id = "heading"> Size of circle by #events executed </h7>
+                  <!-- </div> -->
+                  <div class = "row" style="margin-left: 5px">
+                    <h7 id = "heading"> Active (2012-2017)</h7>
 
-                  <script src="https://www.amcharts.com/lib/4/core.js"></script>
-                  <script src="https://www.amcharts.com/lib/4/charts.js"></script>
-                  <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-                  <script src="https://d3js.org/d3.v3.js"></script>
-                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
+                    <svg height="100" width="100" >
+                      <circle cx="50" cy="50" r="50" stroke="black" stroke-width="0" fill="#c72c41"  fill-opacity="0.7"/>
+                      <!-- <text x="50%" y="50%" text-anchor="middle" stroke-width="2px" dy=".3em" font-size = "12px">
+                       Active 
+                        <tspan  dy="1em">(2012 - 2017)</tspan></text> -->
+                    </svg>
+                  </div>
+                   <div class = "row" style="margin-top: 10px; margin-left: 5px">
+                    <h7 id = "heading"> Inactive (2012-2017)</h7>
+                    <svg height="100" width="100">
+                      <circle cx="50" cy="50" r="50" stroke="black" stroke-width="0" fill="skyblue" fill-opacity="0.7"/>
+<!--                       <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size = "12px">Inactive(2012-2017)</text>
+ -->                    </svg>
+                  </div>
+
+
+                 <div id = "bubblediv" style="height: 100%">   
                 </div>
-
               </div>
             </div>
+               
           </div>
-
-          <!-- donut charts -->
-          <div class = "row">
-            <div class = "col-sm-12">
-              <div class = "well" style=" margin-top: 50px; height: 500px">
-                <div id = "weaponDonutDiv" style="height: 100%; background-color: white">
 
                   <script src="https://www.amcharts.com/lib/4/core.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/maps.js"></script>
                   <script src="https://www.amcharts.com/lib/4/charts.js"></script>
                   <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-                  <script src="https://d3js.org/d3.v3.js"></script>
-                  <script type="text/javascript" src="{{url_for('static', filename = 'js/countryStackedBar.js') }} "></script>
-                </div>
+                  <script src="https://www.amcharts.com/lib/4/geodata/usaLow.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/geodata/indiaLow.js"></script>
+                  <script src="https://www.amcharts.com/lib/4/geodata/pakistanLow.js"></script>
+                   <script src="https://d3js.org/d3.v4.js"></script>
+                  <script type="text/javascript" src="{{url_for('static', filename = 'js/country_map.js') }} "></script>
 
-              </div>
-            </div>
-          </div>
+      	</div>
 
-      </div>
   
   </div>
 </div>
-
-
-
-
 {% endblock %}

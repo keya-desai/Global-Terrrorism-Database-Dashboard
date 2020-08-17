@@ -7,22 +7,6 @@
 
 
 {% block content%}
-<!-- <nav class="navbar navbar-inverse visible-xs">
-
-    <div class="navbar-header">
-      <a class="navbar-brand" href="{{ url_for('home') }}">Global Terrorism Analysis</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('home') }}">Home</a></li>
-        <li><a href="{{ url_for('trends') }}">Trends</a></li>
-        <li><a href="{{ url_for('country_final') }}">Country</a></li>
-         <li class="active"><a href="{{ url_for('analysis') }}">Analysis</a></li>
-      </ul>
-    </div>
-
-</nav> -->
-
 
 <div class="container-fluid">
   <div class="row content">
@@ -31,9 +15,8 @@
           <h4 id = "title"><a href = "{{ url_for('home') }}" style="color: white">Global Terrorism Analysis</h4>
           <hr>
           <ul class="nav nav-pills nav-stacked">
-              <!-- <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li> -->
                <li class="nav-item"><a class="nav-link" href="{{ url_for('trends') }}">Trends</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('country_final') }}">Country Statistics</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('country') }}">Country Statistics</a></li>
                <li class="nav-item"><a class="nav-link active" href="{{ url_for('analysis') }}">Analysis</a></li>
           </ul><br>
         </div>
