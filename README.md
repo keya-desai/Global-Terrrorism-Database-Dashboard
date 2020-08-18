@@ -16,3 +16,10 @@ The visualisations have been rendered using the libraries of D3.js and amCharts.
 The video of the website can be found here:
 
 [![](https://img.youtube.com/vi/uTu3GNRqMJE/maxresdefault.jpg)](https://youtu.be/uTu3GNRqMJE)
+
+Steps to run:
+  1. git clone https://github.com/keya-desai/Terrorism-Analaysis-and-Visualisation.git
+  2. cd Terrorism-Analaysis-and-Visualisation
+  3. python dashboard.py
+
+Run : http://127.0.0.1:5000/
