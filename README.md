@@ -1,4 +1,4 @@
-# Terrorism-Analaysis-and-Visualisation
+# Global Terrorism Database Dashboard
 
 In this project, we have designed and developed an interactive dashboard to explore [Global Terrorism Database (GTD)](https://start.umd.edu/gtd/), which has information of ~180K terrorist events around the world for the years 1970-2017. The dashboard is divided into three main views -   
 ## Trends
