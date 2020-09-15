@@ -18,7 +18,7 @@ The video of the website can be found here:
 [![](https://img.youtube.com/vi/uTu3GNRqMJE/maxresdefault.jpg)](https://youtu.be/uTu3GNRqMJE)
 
 Steps to run:
-  1. git clone https://github.com/keya-desai/Terrorism-Analaysis-and-Visualisation.git
+  1. git clone https://github.com/keya-desai/Global-Terrrorism-Database-Dashboard.git
   2. cd Terrorism-Analaysis-and-Visualisation
   3. python dashboard.py
 
